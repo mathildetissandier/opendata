@@ -22,7 +22,7 @@ def serve_layout():
 
 
 app.layout = serve_layout
-
+layout_sante.register_callbacks(app)
 # Callback pour gérer la navigation
 
 

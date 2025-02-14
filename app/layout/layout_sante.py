@@ -31,6 +31,7 @@ fig1.update_layout(
     xaxis_title='Année',
     yaxis_title='Âge',
     legend_title='Sexe',
+    template="plotly_white",
     # template='plotly_dark',
     xaxis=dict(tickangle=45)
 )
@@ -67,6 +68,7 @@ fig2.update_layout(
     yaxis_title='Valeur',
     barmode='group',
     legend_title='Sexe',
+    template="plotly_white",
     # template='plotly_dark',
     xaxis=dict(tickangle=90)
 )
@@ -143,6 +145,40 @@ layout = dbc.Container([
                color="primary", className="mb-3"),
     html.H2("Indicateurs sur la santé à Londres",
             className="text-center mb-4"),
+
+    # Carte + Indicateur HLE
+    dbc.Card(
+        dbc.CardBody([
+            html.H4("Visualisations de l'espérance de vie (HLE - Healthy Life Expectancy)",
+                    className="card-title"),
+            html.H5(
+                "Sélectionnez un indicateur pour afficher la carte et le graphique"),
+            dcc.Dropdown(
+                id="indicator-dropdown",
+                options=[
+                    {"label": "HLE (Healthy Life Expectancy) Male",
+                     "value": "HLE Male"},
+                    {"label": "HLE (Healthy Life Expectancy) Female",
+                     "value": "HLE Female"}
+                ],
+                value="HLE Male",
+                clearable=False,
+                className="mb-4"
+            ),
+            # 🗺️ Carte + Graphique des intervalles de confiance
+            html.Div([
+                html.Div([
+                    html.Iframe(
+                        id="map", src="/static/london_health_map_male.html", width="100%", height="650px")
+                ], style={"width": "50%", "display": "inline-block"}),
+
+                html.Div([
+                    dcc.Graph(id="confidence-graph")
+                ], style={"width": "50%", "display": "inline-block"})
+            ], style={"display": "flex"})
+        ]),
+        className="mb-4 shadow"
+    ),
 
     # Espérance de vie
     dbc.Card(

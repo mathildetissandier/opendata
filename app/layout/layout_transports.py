@@ -5,6 +5,12 @@ import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash import callback_context
+import folium
+import geopandas as gpd
+import branca
+import geopandas as gpd
+import folium
+import branca
 
 # === Chargement des données pour le premier graphique (CSV) ===
 # Chemin du dossier contenant les fichiers CSV
@@ -70,6 +76,58 @@ df_melted["Valeur"] = df_melted["Valeur"].astype(str)  # Convertir en chaînes d
 df_melted["Valeur"] = df_melted["Valeur"].str.replace(" ", "")  # Retirer les espaces
 df_melted["Valeur"] = pd.to_numeric(df_melted["Valeur"], errors='coerce')  # Convertir en int
 
+# === Chargement des données pour la carte ===
+df_ponts = pd.read_csv('data/transport_restriction_ponts.csv', sep=';')
+df_ponts['Lat'] = df_ponts['Lat'].apply(lambda x: float(str(x).replace(',', '.')))
+df_ponts['Lng'] = df_ponts['Lng'].apply(lambda x: float(str(x).replace(',', '.')))
+
+# Groupby par borough pour compter le nombre de ponts
+ponts_par_borough = df_ponts.groupby('Borough').size().reset_index(name='Number of Bridges')
+
+# Charger le fichier GeoJSON des boroughs de Londres
+gdf = gpd.read_file('data/london_boroughs.geojson')
+
+map_files = {
+    "Polygones": "polygons_map.html",
+    "Markers": "markers_map.html"
+}
+
+maps_borough = {'Barking and Dagenham': 'maps/Barking and Dagenham_map.html',
+ 'Barnet': 'maps/Barnet_map.html',
+ 'Bexley': 'maps/Bexley_map.html',
+ 'Brent': 'maps/Brent_map.html',
+ 'Bromley': 'maps/Bromley_map.html',
+ 'Camden': 'maps/Camden_map.html',
+ 'City of London': 'maps/City of London_map.html',
+ 'Croydon': 'maps/Croydon_map.html',
+ 'Ealing': 'maps/Ealing_map.html',
+ 'Enfield': 'maps/Enfield_map.html',
+ 'Greenwich': 'maps/Greenwich_map.html',
+ 'Hackney': 'maps/Hackney_map.html',
+ 'Hammersmith and Fulham': 'maps/Hammersmith and Fulham_map.html',
+ 'Haringey': 'maps/Haringey_map.html',
+ 'Harrow': 'maps/Harrow_map.html',
+ 'Havering': 'maps/Havering_map.html',
+ 'Hillingdon': 'maps/Hillingdon_map.html',
+ 'Hounslow': 'maps/Hounslow_map.html',
+ 'Islington': 'maps/Islington_map.html',
+ 'Kensington and Chelsea': 'maps/Kensington and Chelsea_map.html',
+ 'Kingston upon Thames': 'maps/Kingston upon Thames_map.html',
+ 'Lambeth': 'maps/Lambeth_map.html',
+ 'Lewisham': 'maps/Lewisham_map.html',
+ 'Merton': 'maps/Merton_map.html',
+ 'Newham': 'maps/Newham_map.html',
+ 'Redbridge': 'maps/Redbridge_map.html',
+ 'Richmond upon Thames': 'maps/Richmond upon Thames_map.html',
+ 'Southwark': 'maps/Southwark_map.html',
+ 'Sutton': 'maps/Sutton_map.html',
+ 'Tower Hamlets': 'maps/Tower Hamlets_map.html',
+ 'Waltham Forest': 'maps/Waltham Forest_map.html',
+ 'Wandsworth': 'maps/Wandsworth_map.html',
+ 'Westminster': 'maps/Westminster_map.html'}
+
+
+# Layout complet avec la carte en bas
 layout = dbc.Container([
     dbc.Button("⬅ Retour à l'accueil", href="/", color="primary", className="mb-3"),
     html.H2("Évolution des moyens de transport à Londres", className="text-center mb-4"),
@@ -83,7 +141,7 @@ layout = dbc.Container([
             value=quartiers[0] if quartiers else None,
             style={'width': '50%', 'padding': '3px'}
         ),
-        dcc.Graph(id='transport-graph')  # Utilisation de l'ID transport-graph
+        dcc.Graph(id='transport-graph')
     ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
 
     # Deuxième graphique (données Excel) : Sélection de la Local Authority et catégories de véhicules
@@ -95,7 +153,6 @@ layout = dbc.Container([
             value=areas[0] if areas else None,
             style={'width': '50%'}
         ),
-
         html.Label("Sélectionnez une ou plusieurs catégories de véhicules :"),
         dcc.Dropdown(
             id='vehicle-dropdown',
@@ -108,33 +165,68 @@ layout = dbc.Container([
 
     # Graphique des données d'évolution avec sélection de la Local Authority
     html.Div([
-        dcc.Graph(id='evolution-graph')  # Utilisation de l'ID evolution-graph
+        dcc.Graph(id='evolution-graph')
     ], style={'padding': '10px', 'border': '1px solid #ccc'}),
 
     # Troisième graphique (données de location de vélos) : Sélection de la route
     html.Div([
         html.H3("Évolution des locations de vélos par mois"),
-        dcc.Graph(id='bike-rentals-graph')  # Utilisation de l'ID bike-rentals-graph
+        dcc.Graph(id='bike-rentals-graph')
     ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
 
-    # Quatrième graphique (température des lignes de métro) : Graphique de la température des lignes de métro
+    # Quatrième graphique (température des lignes de métro)
     html.Div([
         html.H3("Évolution de la température moyenne par ligne de métro à Londres"),
-        dcc.Graph(id='metro-temp-graph')  # Utilisation de l'ID metro-temp-graph
+        dcc.Graph(id='metro-temp-graph')
     ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
 
-    # Cinquième graphique (sélection de la route) : Graphique pour la route
+    # Cinquième graphique (sélection de la route)
     html.Div([
         html.Label("Sélectionnez une Route :"),
         dcc.Dropdown(
             id='route-dropdown',
             options=[{'label': f"Route {route}", 'value': route} for route in df["Route"].unique()],
-            value=df["Route"].unique()[0],  # Route sélectionnée par défaut
+            value=df["Route"].unique()[0],
             style={'width': '50%', 'padding': '3px'}
         ),
-        dcc.Graph(id='route-graph')  # Utilisation de l'ID route-graph
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'})
+        dcc.Graph(id='route-graph')
+    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+
+    # === Nouvelle section pour la carte Folium ===
+    # Nouvelle section pour le dropdown de sélection de type de carte
+    html.Div([
+    html.H3("Sélectionnez le type de carte :"),
+    dcc.Dropdown(
+        id='map-type-dropdown',
+        options=[
+            {'label': 'Carte avec Polygones', 'value': 'Polygones'},
+            {'label': 'Carte avec Marqueurs', 'value': 'Markers'}
+        ],
+        value='Polygones',  # Valeur initiale
+        style={'width': '50%'}
+    ),
+    # Dropdown pour choisir le borough, visible seulement lorsque "Polygones" est sélectionné
+    html.Div([
+        html.H3("Sélectionnez un quartier :"),
+        dcc.Dropdown(
+            id='borough-dropdown',
+            options=[
+                {'label': borough, 'value': borough} for borough in maps_borough.keys()
+            ],
+            value=None,  # Valeur initiale, aucune sélection
+            style={'width': '50%'}
+        ),
+    ], id='borough-dropdown-container', style={'display': 'none'}),  # Masqué par défaut
+    
+    html.Iframe(
+        id='carte-iframe',
+        srcDoc=open(f'static/{map_files["Polygones"]}', 'r').read(),  # Carte par défaut
+        style={'width': '100%', 'height': '600px', 'border': 'none'}
+    )
+], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'})
+
 ], fluid=True)
+
 
 # === Callbacks ===
 
@@ -311,3 +403,29 @@ def update_route_graph(selected_route):
     )
 
     return fig
+
+@callback(
+    [Output('carte-iframe', 'srcDoc'),
+     Output('borough-dropdown-container', 'style')],
+    [Input('map-type-dropdown', 'value'),
+     Input('borough-dropdown', 'value')]
+)
+def update_map(map_type, borough):
+    # Si "Polygones" est sélectionné, afficher le dropdown des boroughs
+    if map_type == 'Polygones':
+        dropdown_style = {'display': 'block'}  # Afficher le dropdown pour choisir le borough
+    else:
+        dropdown_style = {'display': 'none'}  # Cacher le dropdown pour les autres types de carte
+    
+    # Si un borough est sélectionné, afficher la carte spécifique pour ce borough
+    if map_type == 'Polygones' and borough:
+        file_path = f"static/{maps_borough.get(borough, 'maps/Default_map.html')}"
+    else:
+        # Afficher la carte de type "Markers" ou la carte par défaut des Polygones
+        file_path = f"static/{map_files.get(map_type, 'polygons_map.html')}"
+    
+    # Lire le fichier HTML et retourner son contenu
+    with open(file_path, 'r') as file:
+        map_html = file.read()
+    
+    return map_html, dropdown_style

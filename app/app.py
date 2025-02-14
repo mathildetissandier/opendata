@@ -39,7 +39,7 @@ def display_page(pathname):
         return layout_logement.layout
     elif pathname == '/sante':
         return layout_sante.layout
-    elif pathname == '/predictions':
+    elif pathname == '/predictions et clustering':
         return layout_predictions.layout
     else:
         return layout_home.layout

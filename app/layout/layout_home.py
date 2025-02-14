@@ -49,7 +49,8 @@ layout = dbc.Container([
         dbc.Col(
             dbc.Card(
                 dbc.CardBody([
-                    html.H5("Prédictions", className="card-title text-center"),
+                    html.H5("Prédictions et Clustering",
+                            className="card-title text-center"),
                     dcc.Link(html.Img(src="/assets/predictions.png",
                              style={"width": "40%"}), href="/predictions")
                 ]),

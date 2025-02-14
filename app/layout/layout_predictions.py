@@ -264,58 +264,55 @@ def get_available_areas():
     return weight_df["Area Name"].unique()
 
 
-# === Layout complet avec le dropdown ===
 layout = dbc.Container([
-    dbc.Button("⬅ Retour à l'accueil", href="/",
-               color="primary", className="mb-3"),
-    html.H2("Prédictions et clustering",
-            className="text-center mb-4"),
+    dbc.Button("⬅ Retour à l'accueil", href="/", color="primary", className="mb-3"),
+    html.H2("Prédictions et clustering", className="text-center mb-4"),
 
     # Graphique des prédictions ARIMA + XGBoost
     dbc.Card([
         dbc.CardHeader(html.H3("Prédictions des locations de vélos")),
         dbc.CardBody([
-            dcc.Graph(
-                id='predictions-graph',
-                figure=generate_prediction_graph()
-            )
+            dcc.Graph(id='predictions-graph', figure=generate_prediction_graph())
         ])
     ], className="mb-4"),
 
     # Carte pour le graphique du nombre de passagers par ligne de métro
     dbc.Card([
-        dbc.CardHeader(
-            html.H3("Prédictions du nombre de passagers par ligne de métro")),
+        dbc.CardHeader(html.H3("Prédictions du nombre de passagers par ligne de métro")),
         dbc.CardBody([
-            dcc.Graph(
-                id='metro-passenger-graph',
-                figure=generate_metro_passenger_graph()
-            )
+            dcc.Graph(id='metro-passenger-graph', figure=generate_metro_passenger_graph())
         ])
     ], className="mb-4"),
 
     # Graphique des prédictions de l'excès de poids
     dbc.Card([
-        dbc.CardHeader(
-            html.H3("Prédictions de l'excès de poids par quartier")),
+        dbc.CardHeader(html.H3("Prédictions de l'excès de poids par quartier")),
         html.Div([
             html.Label("Sélectionnez une ville:"),
             dcc.Dropdown(
                 id="city-dropdown",
-                options=[{'label': area, 'value': area}
-                         for area in get_available_areas()],
+                options=[{'label': area, 'value': area} for area in get_available_areas()],
                 value="Barnet",  # Valeur initiale
                 clearable=False,
                 style={'width': '50%', 'margin': 'auto'}
             )
         ], className="mb-4"),
-        dbc.CardBody([
-            dcc.Graph(
-                id='weight-predictions-graph'
-            )
-        ])
+        dbc.CardBody([dcc.Graph(id='weight-predictions-graph')])
     ], className="mb-4"),
+
+    # Ajout de la carte sauvegardée en HTML
+    html.Div([
+        html.H3("Carte des clusters de Londres"),
+        html.Iframe(
+            src='/static/london_clusters_map.html',
+            width="100%",
+            height="600px",
+            style={"border": "none"}
+        )
+    ], className="mt-4")
+
 ], fluid=True)
+
 
 
 def register_callbacks(app):

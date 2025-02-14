@@ -1,12 +1,12 @@
 Height restriction (m);Height restriction (imperial);Easting;Northing;Grid Reference;Lat;Lng;Borough;Road name
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";549062;183214;TQ4906283214;51,528168;0,147455;Barking & Dagenham;Chequers Lane
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";549062;183214;TQ4906283214;51,528168;0,147455;Barking and Dagenham;Chequers Lane
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";528611;184683;TQ2861184683;51,546393;-0,14664731;Camden;Prince Of Wales Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";515399;183904;TQ1539983904;51,542246;-0,33734636;Ealing;Green Park Way
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";515422;183895;TQ1542283895;51,54216;-0,3370178;Ealing;Green Park Way
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";520659;180322;TQ2065980322;51,508954;-0,26275982;Ealing;Churchfield Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";536317;197080;TQ3631797080;51,655986;-0,030771008;Enfield;Green Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";536427;198773;TQ3642798773;51,671172;-0,028521537;Enfield;Ordnance Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";526311;176665;TQ2631176665;51,474855;-0,18266802;Hammersmith & Fulham;Townmead Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";526311;176665;TQ2631176665;51,474855;-0,18266802;Hammersmith and Fulham;Townmead Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";552130;182000;TQ5213082000;51,516442;0,19112452;Havering;Ferry Lane
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";530898;179642;TQ3089879642;51,500567;-0,11555583;Lambeth;Westminster Bridge Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";544298;182952;TQ4429882952;51,52705;0,078720308;Newham;Jenkins Lane
@@ -86,7 +86,7 @@ Between 4.6 and 5.1;"Between 15'0"" and 16'6""";533404;182759;TQ3340482759;51,52
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";533392;182673;TQ3339282673;51,527222;-0,078500618;Hackney;Old Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";533368;182674;TQ3336882674;51,527236;-0,078845999;Hackney;Old Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";534959;184927;TQ3495984927;51,547105;-0,055062368;Hackney;Mare Street
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522692;178709;TQ2269278709;51,494021;-0,23404066;Hammersmith & Fulham;Studland Street
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522692;178709;TQ2269278709;51,494021;-0,23404066;Hammersmith and Fulham;Studland Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";531846;188176;TQ3184688176;51,577037;-0,098712631;Haringey;Green Lanes
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";530051;191389;TQ3005191389;51,606327;-0,12341182;Haringey;Bounds Green Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";533476;188267;TQ3347688267;51,577471;-0,075169592;Haringey;St Anns Road
@@ -155,7 +155,7 @@ Between 4.6 and 5.1;"Between 15'0"" and 16'6""";527244;176267;TQ2724476267;51,47
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";528446;173183;TQ2844673183;51,443083;-0,15320722;Wandsworth;Balham High Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";528459;173198;TQ2845973198;51,443215;-0,15301483;Wandsworth;Balham High Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";524643;173845;TQ2464373845;51,449881;-0,20766564;Wandsworth;Granville Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";544979;183854;TQ4497983854;51,53498;0,088901204;Barking & Dagenham;Wedderburn Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";544979;183854;TQ4497983854;51,53498;0,088901204;Barking and Dagenham;Wedderburn Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";524149;187751;TQ2414987751;51,574964;-0,20987869;Barnet;Elmcroft Crescent
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";520741;190493;TQ2074190493;51,600346;-0,25809035;Barnet;Montrose Avenue
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523706;188044;TQ2370688044;51,577694;-0,21616491;Barnet;North Circular Road
@@ -184,18 +184,18 @@ Between 4.6 and 5.1;"Between 15'0"" and 16'6""";534560;185144;TQ3456085144;51,54
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";534535;185126;TQ3453585126;51,548994;-0,061097348;Hackney;Dalston Lane
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";535458;184956;TQ3545884956;51,547246;-0,047859295;Hackney;Ponsford Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";535470;184956;TQ3547084956;51,547243;-0,047686343;Hackney;Ponsford Street
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522423;182396;TQ2242382396;51,527215;-0,23663462;Hammersmith & Fulham;Hythe Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522038;182487;TQ2203882487;51,528116;-0,24215018;Hammersmith & Fulham;Salter Street
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522423;182396;TQ2242382396;51,527215;-0,23663462;Hammersmith and Fulham;Hythe Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";522038;182487;TQ2203882487;51,528116;-0,24215018;Hammersmith and Fulham;Salter Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";534497;189065;TQ3449789065;51,5844;-0,060138972;Haringey;Jarrow Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";533735;190922;TQ3373590922;51,601268;-0,070423466;Haringey;Kings Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";551405;188503;TQ5140588503;51,575066;0,18347969;Havering;South Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";551415;188479;TQ5141588479;51,574847;0,18361355;Havering;South Street
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";530647;184349;TQ3064784349;51,542924;-0,11742621;Islington;Caledonian Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523683;180795;TQ2368380795;51,512552;-0,21904217;Kensington & Chelsea;Freston Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523771;180920;TQ2377180920;51,513656;-0,21773085;Kensington & Chelsea;Bramley Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523935;181115;TQ2393581115;51,515373;-0,21530019;Kensington & Chelsea;Kingsdown Close
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523770;180895;TQ2377080895;51,513432;-0,21775402;Kensington & Chelsea;Bramley Road
-Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523890;181058;TQ2389081058;51,51487;-0,21596838;Kensington & Chelsea;Silchester Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523683;180795;TQ2368380795;51,512552;-0,21904217;Kensington and Chelsea;Freston Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523771;180920;TQ2377180920;51,513656;-0,21773085;Kensington and Chelsea;Bramley Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523935;181115;TQ2393581115;51,515373;-0,21530019;Kensington and Chelsea;Kingsdown Close
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523770;180895;TQ2377080895;51,513432;-0,21775402;Kensington and Chelsea;Bramley Road
+Between 4.6 and 5.1;"Between 15'0"" and 16'6""";523890;181058;TQ2389081058;51,51487;-0,21596838;Kensington and Chelsea;Silchester Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";519892;165646;TQ1989265646;51,377217;-0,27877267;Kingston upon Thames;Kingston Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";529365;176257;TQ2936576257;51,470499;-0,13886805;Lambeth;Wandsworth Road
 Between 4.6 and 5.1;"Between 15'0"" and 16'6""";531132;179800;TQ3113279800;51,501932;-0,1121279;Lambeth;Station Approach Road
@@ -304,9 +304,9 @@ Between 4.1 and 4.5;"Between 13'3"" and 14'9""";540503;177396;TQ4050377396;51,47
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";534580;185022;TQ3458085022;51,548049;-0,060488494;Hackney;Marcon Place
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";534604;185036;TQ3460485036;51,548169;-0,060137229;Hackney;Marcon Place
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533566;184180;TQ3356684180;51,540723;-0,075422735;Hackney;Middleton Road
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524529;176021;TQ2452976021;51,469462;-0,20853979;Hammersmith & Fulham;Hurlingham Road
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524699;176245;TQ2469976245;51,471438;-0,20601461;Hammersmith & Fulham;New King's Road
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";521719;181206;TQ2171981206;51,516672;-0,24718852;Hammersmith & Fulham;Erconwald Street
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524529;176021;TQ2452976021;51,469462;-0,20853979;Hammersmith and Fulham;Hurlingham Road
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524699;176245;TQ2469976245;51,471438;-0,20601461;Hammersmith and Fulham;New King's Road
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";521719;181206;TQ2171981206;51,516672;-0,24718852;Hammersmith and Fulham;Erconwald Street
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533464;189012;TQ3346489012;51,584169;-0,075059768;Haringey;West Green Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533678;191379;TQ3367891379;51,605389;-0,071071937;Haringey;White Hart Lane
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";514281;186404;TQ1428186404;51,564942;-0,35264916;Harrow;Northolt Road
@@ -315,7 +315,7 @@ Between 4.1 and 4.5;"Between 13'3"" and 14'9""";507531;176781;TQ0753176781;51,47
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";517877;177219;TQ1787777219;51,481653;-0,30386332;Hounslow;Justin Close
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";517860;177230;TQ1786077230;51,481755;-0,30410436;Hounslow;Dock Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";530122;184137;TQ3012284137;51,54114;-0,1250708;Islington;York Way
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524060;181245;TQ2406081245;51,516514;-0,21345398;Kensington & Chelsea;St Mark's Road
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524060;181245;TQ2406081245;51,516514;-0,21345398;Kensington and Chelsea;St Mark's Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";517804;167106;TQ1780467106;51,390776;-0,30827522;Kingston upon Thames;Brighton Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";531536;175553;TQ3153675553;51,463672;-0,10789115;Lambeth;Barrington Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";531544;175536;TQ3154475536;51,463518;-0,10778238;Lambeth;Barrington Road
@@ -371,8 +371,8 @@ Between 4.1 and 4.5;"Between 13'3"" and 14'9""";534772;183832;TQ3477283832;51,53
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";534705;184762;TQ3470584762;51,545683;-0,058786315;Hackney;Wilton Way
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";537012;184566;TQ3701284566;51,543367;-0,025613929;Hackney;Wallis Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";534682;184765;TQ3468284765;51,545715;-0,05911665;Hackney;Wilton Way
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";525053;176706;TQ2505376706;51,475503;-0,20075753;Hammersmith & Fulham;Parsons Green Lane
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";523129;181554;TQ2312981554;51,519494;-0,22675666;Hammersmith & Fulham;North Pole Road
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";525053;176706;TQ2505376706;51,475503;-0,20075753;Hammersmith and Fulham;Parsons Green Lane
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";523129;181554;TQ2312981554;51,519494;-0,22675666;Hammersmith and Fulham;North Pole Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";529345;187831;TQ2934587831;51,574515;-0,13491095;Haringey;Stanhope Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533742;190847;TQ3374290847;51,600593;-0,070351027;Haringey;Ruskin Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";514241;188049;TQ1424188049;51,579735;-0,35269163;Harrow;The Gardens
@@ -391,7 +391,7 @@ Between 4.1 and 4.5;"Between 13'3"" and 14'9""";513749;175982;TQ1374975982;51,47
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";514223;176182;TQ1422376182;51,473081;-0,35679532;Hounslow;Kingsley Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";521212;178806;TQ2121278806;51,495211;-0,25531576;Hounslow;Turnham Green Terrace
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";521213;178784;TQ2121378784;51,495013;-0,25530891;Hounslow;Turnham Green Terrace
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524289;181360;TQ2428981360;51,517497;-0,21011487;Kensington & Chelsea;Ladbroke Grove
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";524289;181360;TQ2428981360;51,517497;-0,21011487;Kensington and Chelsea;Ladbroke Grove
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";532012;171965;TQ3201271965;51,431318;-0,10238032;Lambeth;Norwood High Street
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";532071;171944;TQ3207171944;51,431115;-0,10153992;Lambeth;Pilgrim Hill
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";532916;171445;TQ3291671445;51,426434;-0,089578833;Lambeth;Salter's Hill
@@ -441,7 +441,7 @@ Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533515;182925;TQ3351582925;51,52
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533481;182892;TQ3348182892;51,529169;-0,077135511;Hackney;Union Walk
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533471;182856;TQ3347182856;51,528848;-0,077293213;Hackney;Union Walk
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533558;183564;TQ3355883564;51,535189;-0,075771517;Hackney;Laburnum Street
-Between 4.1 and 4.5;"Between 13'3"" and 14'9""";522955;178671;TQ2295578671;51,493622;-0,23026737;Hammersmith & Fulham;Cambridge Grove
+Between 4.1 and 4.5;"Between 13'3"" and 14'9""";522955;178671;TQ2295578671;51,493622;-0,23026737;Hammersmith and Fulham;Cambridge Grove
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";532649;188415;TQ3264988415;51,578996;-0,087041206;Haringey;Hermitage Road
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";533711;191114;TQ3371191114;51,603;-0,070696654;Haringey;Orchard Place
 Between 4.1 and 4.5;"Between 13'3"" and 14'9""";514448;176525;TQ1444876525;51,476119;-0,35344619;Hounslow;Spring Grove Road
@@ -554,7 +554,7 @@ Between 3.6 and 4.0;"Between 11'9"" and 13'0""";534128;185839;TQ3412885839;51,55
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";534795;184395;TQ3479584395;51,542363;-0,057629659;Hackney;Ellingfort Road
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";534795;184345;TQ3479584345;51,541914;-0,057648792;Hackney;London Lane
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";534618;184962;TQ3461884962;51,547501;-0,059963735;Hackney;Spurstowe Road
-Between 3.6 and 4.0;"Between 11'9"" and 13'0""";522996;178693;TQ2299678693;51,493811;-0,22966943;Hammersmith & Fulham;Leamore Street
+Between 3.6 and 4.0;"Between 11'9"" and 13'0""";522996;178693;TQ2299678693;51,493811;-0,22966943;Hammersmith and Fulham;Leamore Street
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";530656;187796;TQ3065687796;51,573899;-0,11601681;Haringey;Mount Pleasant Villas
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";533725;189954;TQ3372589954;51,592572;-0,070936399;Haringey;St Loys Road
 Between 3.6 and 4.0;"Between 11'9"" and 13'0""";515228;189643;TQ1522889643;51,59386;-0,33793116;Harrow;Headstone Drive
@@ -702,7 +702,7 @@ Between 3.1 and 3.5;"Between 9'10"" and 11'6""";552397;174704;TQ5239774704;51,45
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";530446;182780;TQ3044682780;51,528871;-0,12090381;Camden;Car park access
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";530782;182591;TQ3078282591;51,527095;-0,11613301;Camden;Fleet Square
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";530391;182863;TQ3039182863;51,52963;-0,12166552;Camden;Car park access
-Between 3.1 and 3.5;"Between 9'10"" and 11'6""";526026;179637;TQ2602679637;51,501628;-0,18570953;Kensington & Chelsea;Car park access
+Between 3.1 and 3.5;"Between 9'10"" and 11'6""";526026;179637;TQ2602679637;51,501628;-0,18570953;Kensington and Chelsea;Car park access
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";523304;169314;TQ2330469314;51,409453;-0,22850078;Merton;Raynes Park Bridge
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";523301;169327;TQ2330169327;51,40957;-0,22853937;Merton;Coombe Lane
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";534733;182349;TQ3473382349;51,523992;-0,059305307;Tower Hamlets;Barnsley St
@@ -714,7 +714,7 @@ Between 3.1 and 3.5;"Between 9'10"" and 11'6""";533026;167725;TQ3302667725;51,39
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";533019;167702;TQ3301967702;51,392773;-0,089500854;Croydon;Dagnall Park
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";535700;184949;TQ3570084949;51,547125;-0,044374127;Hackney;Digby Road
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";535133;187140;TQ3513387140;51,56695;-0,051704888;Hackney;Leaside Road
-Between 3.1 and 3.5;"Between 9'10"" and 11'6""";523239;179251;TQ2323979251;51,498773;-0,22597619;Hammersmith & Fulham;Trussley Road
+Between 3.1 and 3.5;"Between 9'10"" and 11'6""";523239;179251;TQ2323979251;51,498773;-0,22597619;Hammersmith and Fulham;Trussley Road
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";522553;187561;TQ2255387561;51,573605;-0,23296392;Barnet;Brent Park Road
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";522532;187543;TQ2253287543;51,573448;-0,23327307;Barnet;Brent Park Road
 Between 3.1 and 3.5;"Between 9'10"" and 11'6""";522944;184955;TQ2294484955;51,5501;-0,22823523;Brent;Park Avenue North
@@ -736,7 +736,7 @@ Up to 3.0;"Up to 9'10""";549193;173354;TQ4919373354;51,439539;0,14517985;Bexley;
 Up to 3.0;"Up to 9'10""";533627;192289;TQ3362792289;51,613578;-0,07146139;Enfield;Car park access
 Up to 3.0;"Up to 9'10""";533501;192285;TQ3350192285;51,613572;-0,073281584;Enfield;Car park access
 Up to 3.0;"Up to 9'10""";507562;175765;TQ0756275765;51,470637;-0,4527892;Hillingdon;Car park access
-Up to 3.0;"Up to 9'10""";525753;178018;TQ2575378018;51,487139;-0,19021693;Kensington & Chelsea;Car park access
+Up to 3.0;"Up to 9'10""";525753;178018;TQ2575378018;51,487139;-0,19021693;Kensington and Chelsea;Car park access
 Up to 3.0;"Up to 9'10""";520762;168438;TQ2076268438;51,402126;-0,26532988;Kingston upon Thames;Elm Road
 Up to 3.0;"Up to 9'10""";535277;181977;TQ3527781977;51,520519;-0,051611465;Tower Hamlets;Assembly Passage
 Up to 3.0;"Up to 9'10""";528115;176188;TQ2811576188;51,470163;-0,15687977;Wandsworth;Culvert Road
@@ -773,7 +773,7 @@ Up to 3.0;"Up to 9'10""";507663;175890;TQ0766375890;51,471742;-0,4512976;Hilling
 Up to 3.0;"Up to 9'10""";543572;178659;TQ4357278659;51,48866;0,066515762;Greenwich;Car park access
 Up to 3.0;"Up to 9'10""";507532;176150;TQ0753276150;51,474103;-0,45310392;Hillingdon;Inner Ring West
 Up to 3.0;"Up to 9'10""";507537;176781;TQ0753776781;51,479774;-0,45284008;Hillingdon;Tunnel Road East
-Up to 3.0;"Up to 9'10""";525009;179331;TQ2500979331;51,499103;-0,20046218;Kensington & Chelsea;Car park access
+Up to 3.0;"Up to 9'10""";525009;179331;TQ2500979331;51,499103;-0,20046218;Kensington and Chelsea;Car park access
 Up to 3.0;"Up to 9'10""";530030;171156;TQ3003071156;51,424505;-0,13117187;Lambeth;Car park access
 Up to 3.0;"Up to 9'10""";536038;177996;TQ3603877996;51,484563;-0,042183754;Lewisham;Trundleys Road
 Up to 3.0;"Up to 9'10""";536039;178025;TQ3603978025;51,484823;-0,042158199;Lewisham;Trundleys Road
@@ -814,12 +814,12 @@ Up to 3.0;"Up to 9'10""";544577;179127;TQ4457779127;51,492609;0,081172342;Greenw
 Up to 3.0;"Up to 9'10""";544586;179226;TQ4458679226;51,493496;0,081342412;Greenwich;Car park access
 Up to 3.0;"Up to 9'10""";544595;179128;TQ4459579128;51,492613;0,081431849;Greenwich;Car park access
 Up to 3.0;"Up to 9'10""";539227;178423;TQ3922778423;51,487624;0,0038823269;Greenwich;Car park access
-Up to 3.0;"Up to 9'10""";523270;178007;TQ2327078007;51,487586;-0,2259639;Hammersmith & Fulham;Car park access
-Up to 3.0;"Up to 9'10""";525435;175622;TQ2543575622;51,465676;-0,19564444;Hammersmith & Fulham;Car park access
+Up to 3.0;"Up to 9'10""";523270;178007;TQ2327078007;51,487586;-0,2259639;Hammersmith and Fulham;Car park access
+Up to 3.0;"Up to 9'10""";525435;175622;TQ2543575622;51,465676;-0,19564444;Hammersmith and Fulham;Car park access
 Up to 3.0;"Up to 9'10""";512045;189550;TQ1204589550;51,593666;-0,38389157;Harrow;Car park access
 Up to 3.0;"Up to 9'10""";513706;175372;TQ1370675372;51,465905;-0,36449622;Hounslow;Car park access
 Up to 3.0;"Up to 9'10""";517463;177321;TQ1746377321;51,482655;-0,30978859;Hounslow;Car park access
-Up to 3.0;"Up to 9'10""";523952;179883;TQ2395279883;51,504297;-0,215488;Kensington & Chelsea;Car park access
+Up to 3.0;"Up to 9'10""";523952;179883;TQ2395279883;51,504297;-0,215488;Kensington and Chelsea;Car park access
 Up to 3.0;"Up to 9'10""";541635;180869;TQ4163580869;51,509006;0,039522132;Newham;Lynx Way
 Up to 3.0;"Up to 9'10""";542396;183526;TQ4239683526;51,53269;0,05155312;Newham;Car park access
 Up to 3.0;"Up to 9'10""";542067;181212;TQ4206781212;51,51198;0,045880934;Newham;Car park access
@@ -862,7 +862,7 @@ Up to 3.0;"Up to 9'10""";535337;179778;TQ3533779778;51,500744;-0,05159052;Southw
 Up to 3.0;"Up to 9'10""";535980;180911;TQ3598080911;51,510771;-0,041896169;Tower Hamlets;Rotherhithe Tunnel
 Up to 3.0;"Up to 9'10""";525780;175227;TQ2578075227;51,46205;-0,19082092;Wandsworth;Car park access
 Up to 3.0;"Up to 9'10""";528518;179981;TQ2851879981;51,504159;-0,14970149;Westminster;Hamilton Mews
-Up to 3.0;"Up to 9'10""";549879;184015;TQ4987984015;51,535149;0,15956436;Barking & Dagenham;Car park access
+Up to 3.0;"Up to 9'10""";549879;184015;TQ4987984015;51,535149;0,15956436;Barking and Dagenham;Car park access
 Up to 3.0;"Up to 9'10""";549126;175127;TQ4912675127;51,455488;0,14496312;Bexley;Car park access
 Up to 3.0;"Up to 9'10""";546488;169402;TQ4648869402;51,404734;0,10465696;Bromley;Car park access
 Up to 3.0;"Up to 9'10""";534151;197298;TQ3415197298;51,658465;-0,06198013;Enfield;Donkey Lane

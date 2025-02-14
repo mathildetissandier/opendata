@@ -4,7 +4,8 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 from flask import Flask
 from layout import layout_home, layout_logement, layout_sante, layout_predictions
-from layout.layout_transports import layout  # Assurez-vous d'importer la variable 'layout' définie dans layout_transports
+# Assurez-vous d'importer la variable 'layout' définie dans layout_transports
+from layout.layout_transports import layout
 
 # Initialisation de l'application Dash avec un thème Bootstrap
 server = Flask(__name__)
@@ -23,6 +24,7 @@ def serve_layout():
 
 app.layout = serve_layout
 layout_sante.register_callbacks(app)
+layout_predictions.register_callbacks(app)
 # Callback pour gérer la navigation
 
 
@@ -41,6 +43,7 @@ def display_page(pathname):
         return layout_predictions.layout
     else:
         return layout_home.layout
+
 
 # Lancer l'application
 if __name__ == '__main__':

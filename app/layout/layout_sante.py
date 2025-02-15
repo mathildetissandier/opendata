@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 import plotly.express as px
+from dash import callback_context, no_update
 
 #####
 # Graphique 1 : Evolution de l'espérence de vie moyenne homme/femme à Londres
@@ -31,8 +32,10 @@ fig1.update_layout(
     xaxis_title='Année',
     yaxis_title='Âge',
     legend_title='Sexe',
-    template="plotly_white",
-    # template='plotly_dark',
+    template='plotly_dark',
+    paper_bgcolor='black',
+    plot_bgcolor='black',
+    font=dict(color='white'),
     xaxis=dict(tickangle=45)
 )
 
@@ -68,8 +71,10 @@ fig2.update_layout(
     yaxis_title='Valeur',
     barmode='group',
     legend_title='Sexe',
-    template="plotly_white",
-    # template='plotly_dark',
+    template='plotly_dark',
+    paper_bgcolor='black',
+    plot_bgcolor='black',
+    font=dict(color='white'),
     xaxis=dict(tickangle=90)
 )
 
@@ -136,6 +141,13 @@ fig_5 = px.line(
             "Late Diagnosis Rate": "Taux de diagnostic tardif (%)"}
 )
 
+fig_5.update_layout(
+    template='plotly_dark',
+    paper_bgcolor='black',
+    plot_bgcolor='black',
+    font=dict(color='white')
+)
+
 #####
 # Mise en page
 #####
@@ -144,15 +156,16 @@ layout = dbc.Container([
     dbc.Button("⬅ Retour à l'accueil", href="/",
                color="primary", className="mb-3"),
     html.H2("Indicateurs sur la santé à Londres",
-            className="text-center mb-4"),
+            className="text-center mb-4", style={'color': 'white'}),
 
     # Carte + Indicateur HLE
     dbc.Card(
         dbc.CardBody([
             html.H4("Visualisations de l'espérance de vie (HLE - Healthy Life Expectancy)",
-                    className="card-title"),
+                    className="card-title", style={'color': 'white'}),
             html.H5(
-                "Sélectionnez un indicateur pour afficher la carte et le graphique"),
+                "Sélectionnez un indicateur pour afficher la carte et le graphique",
+                style={'color': 'white'}),
             dcc.Dropdown(
                 id="indicator-dropdown",
                 options=[
@@ -165,6 +178,7 @@ layout = dbc.Container([
                 clearable=False,
                 className="mb-4"
             ),
+            dbc.Button("Analyse", id="health_open-analysis-button-0", color="info", className="mb-3"),  # Bouton Analyse pour la carte
             # 🗺️ Carte + Graphique des intervalles de confiance
             html.Div([
                 html.Div([
@@ -175,8 +189,14 @@ layout = dbc.Container([
                 html.Div([
                     dcc.Graph(id="confidence-graph")
                 ], style={"width": "50%", "display": "inline-block"})
-            ], style={"display": "flex"})
-        ]),
+            ], style={"display": "flex"}),
+            # Modal pour la carte
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte et du graphique des intervalles de confiance")),
+                dbc.ModalBody(id="health_analysis-content-0"),
+                dbc.ModalFooter(dbc.Button("Fermer", id="health_close-analysis-button-0", className="ms-auto")),
+            ], id="health_analysis-modal-0", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
 
@@ -184,9 +204,16 @@ layout = dbc.Container([
     dbc.Card(
         dbc.CardBody([
             html.H4("Évolution de l'espérance de vie à Londres",
-                    className="card-title"),
-            dcc.Graph(figure=fig1)
-        ]),
+                    className="card-title", style={'color': 'white'}),
+            dbc.Button("Analyse", id="health_open-analysis-button-1", color="info", className="mb-3"),
+            dcc.Graph(figure=fig1),
+            # Modal pour le premier graphique
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle("Analyse de l'évolution de l'espérance de vie")),
+                dbc.ModalBody(id="health_analysis-content-1"),
+                dbc.ModalFooter(dbc.Button("Fermer", id="health_close-analysis-button-1", className="ms-auto")),
+            ], id="health_analysis-modal-1", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
 
@@ -194,9 +221,16 @@ layout = dbc.Container([
     dbc.Card(
         dbc.CardBody([
             html.H4("Comparaison des valeurs moyennes par zone géographique",
-                    className="card-title"),
-            dcc.Graph(figure=fig2)
-        ]),
+                    className="card-title", style={'color': 'white'}),
+            dbc.Button("Analyse", id="health_open-analysis-button-2", color="info", className="mb-3"),
+            dcc.Graph(figure=fig2),
+            # Modal pour le deuxième graphique
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle("Analyse de la comparaison par zone géographique")),
+                dbc.ModalBody(id="health_analysis-content-2"),
+                dbc.ModalFooter(dbc.Button("Fermer", id="health_close-analysis-button-2", className="ms-auto")),
+            ], id="health_analysis-modal-2", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
 
@@ -204,7 +238,7 @@ layout = dbc.Container([
     dbc.Card(
         dbc.CardBody([
             html.H3("Évolution de l'excès de poids chez les enfants (10-11 ans)",
-                    className="card-title"),
+                    className="card-title", style={'color': 'white'}),
             dcc.Dropdown(
                 id="area-dropdown",
                 options=[{"label": area, "value": area}
@@ -213,8 +247,15 @@ layout = dbc.Container([
                 clearable=False,
                 className="mb-4"
             ),
-            dcc.Graph(id="weight-trend-graph")
-        ]),
+            dbc.Button("Analyse", id="health_open-analysis-button-3", color="info", className="mb-3"),
+            dcc.Graph(id="weight-trend-graph"),
+            # Modal pour le troisième graphique
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle("Analyse de l'évolution de l'excès de poids")),
+                dbc.ModalBody(id="health_analysis-content-3"),
+                dbc.ModalFooter(dbc.Button("Fermer", id="health_close-analysis-button-3", className="ms-auto")),
+            ], id="health_analysis-modal-3", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
 
@@ -222,17 +263,23 @@ layout = dbc.Container([
     dbc.Card(
         dbc.CardBody([
             html.H3("Inégalités du diagnostic tardif du VIH selon l'ethnie",
-                    className="card-title"),
-            dcc.Graph(figure=fig_5)
-        ]),
+                    className="card-title", style={'color': 'white'}),
+            dbc.Button("Analyse", id="health_open-analysis-button-4", color="info", className="mb-3"),
+            dcc.Graph(figure=fig_5),
+            # Modal pour le quatrième graphique
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle("Analyse des inégalités du diagnostic tardif du VIH")),
+                dbc.ModalBody(id="health_analysis-content-4"),
+                dbc.ModalFooter(dbc.Button("Fermer", id="health_close-analysis-button-4", className="ms-auto")),
+            ], id="health_analysis-modal-4", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     )
-], fluid=True)
+], fluid=True, style={'backgroundColor': 'black', 'color': 'white', 'minHeight': '100vh', 'padding': '20px'})
 
 #####
 # Dropdowns
 #####
-
 
 def register_callbacks(app):
     @app.callback(
@@ -266,7 +313,10 @@ def register_callbacks(app):
             title="Indicateur HLE avec intervalles de confiance",
             xaxis_title="Période", yaxis_title="Valeur",
             legend_title="Légende", xaxis_tickangle=-45,
-            template="plotly_white"
+            template='plotly_dark',
+            paper_bgcolor='black',
+            plot_bgcolor='black',
+            font=dict(color='white')
         )
 
         return map_src, fig
@@ -291,7 +341,30 @@ def register_callbacks(app):
             title=f"Évolution de l'excès de poids à {selected_area}",
             xaxis_title='Période',
             yaxis_title='Poids',
-            template='plotly_white'
+            template='plotly_dark',
+            paper_bgcolor='black',
+            plot_bgcolor='black',
+            font=dict(color='white')
         )
 
         return fig
+
+    # Callbacks pour les modals
+    for i in range(0, 5):  # 5 modals (0 pour la carte, 1-4 pour les graphiques)
+        @app.callback(
+            [Output(f"health_analysis-modal-{i}", "is_open"),
+             Output(f"health_analysis-content-{i}", "children")],
+            [Input(f"health_open-analysis-button-{i}", "n_clicks"),
+             Input(f"health_close-analysis-button-{i}", "n_clicks")],
+            prevent_initial_call=True
+        )
+        def toggle_modal(open_clicks, close_clicks, i=i):
+            ctx = callback_context
+            if not ctx.triggered:
+                return no_update, no_update
+            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            
+            if button_id == f"health_open-analysis-button-{i}":
+                # Retourner le contenu de l'analyse pour le graphique correspondant
+                analysis_text = f"Description spécifique pour le graphique {i}."
+                return True, analysis_text

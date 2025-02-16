@@ -3,21 +3,21 @@ import numpy as np
 import plotly.express as px
 import pmdarima as pm
 import statsmodels.api as sm
-from xgboost import XGBRegressor
-import warnings
-from dash import dcc, html
-import dash_bootstrap_components as dbc
-from sklearn.preprocessing import StandardScaler
 import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
+import warnings
+from xgboost import XGBRegressor
+from dash import dcc, html, callback_context, no_update, Input, Output
+from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from dash.dependencies import Input, Output
-from dash import callback_context, no_update
-from dash import dcc, html, Input, Output, callback_context, no_update
 from pathlib import Path
 
 warnings.filterwarnings("ignore")
 
 # Fonction pour générer le graphique des prédictions ARIMA + XGBoost
+
+
 def generate_prediction_graph():
     # Charger et préparer les données
     data = pd.read_csv('data/transport_location_velo.csv',
@@ -91,6 +91,8 @@ def generate_prediction_graph():
     return fig1
 
 # Fonction pour générer le graphique des passagers par ligne de métro
+
+
 def generate_metro_passenger_graph():
     # Charger les données
     data = pd.read_csv('data/transport_temperatures_metro.csv')
@@ -177,6 +179,8 @@ def generate_metro_passenger_graph():
     return fig2
 
 # Fonction pour générer le graphique de l'excès de poids en fonction de la ville sélectionnée
+
+
 def generate_weight_prediction_graph(selected_area):
     # Chargement des données d'excès de poids
     file_path = "data/His indicators update Nov 2024 FINAL.xlsx"
@@ -264,62 +268,80 @@ def generate_weight_prediction_graph(selected_area):
     return fig
 
 # Liste des villes disponibles dans les données
+
+
 def get_available_areas():
     file_path = "data/His indicators update Nov 2024 FINAL.xlsx"
     weight_df = pd.read_excel(
         file_path, sheet_name="5. Excess weight age 10-11")
     return weight_df["Area Name"].unique()
 
+
 # Layout avec fond noir partout
 layout = dbc.Container([
-    dbc.Button("⬅ Retour à l'accueil", href="/", color="primary", className="mb-3"),
-    html.H2("Prédictions et clustering", className="text-center mb-4", style={'color': 'white'}),
+    dbc.Button("⬅ Retour à l'accueil", href="/",
+               color="primary", className="mb-3"),
+    html.H2("Prédictions et clustering",
+            className="text-center mb-4", style={'color': 'white'}),
 
     # Graphique des prédictions ARIMA + XGBoost
     dbc.Card([
-        dbc.CardHeader(html.H3("Prédictions des locations de vélos", style={'color': 'white'})),
+        dbc.CardHeader(
+            html.H3("Prédictions des locations de vélos", style={'color': 'white'})),
         dbc.CardBody([
-            dbc.Button("Analyse", id="pred_open-analysis-button-1", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dbc.Button("Analyse", id="pred_open-analysis-button-1", color="info",
+                       className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(
                 id='predictions-graph',
                 figure=generate_prediction_graph(),
-                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+                style={'background-color': 'black',
+                       'border': '2px solid white', 'border-radius': '10px'}
             )
         ], style={'background-color': 'black'}),
         # Modal pour le premier graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse des prédictions des locations de vélos")),
+            dbc.ModalHeader(dbc.ModalTitle(
+                "Analyse des prédictions des locations de vélos")),
             dbc.ModalBody(id="pred_analysis-content-1"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="pred_close-analysis-button-1", className="ms-auto")),
+            dbc.ModalFooter(dbc.Button(
+                "Fermer", id="pred_close-analysis-button-1", className="ms-auto")),
         ], id="pred_analysis-modal-1", size="lg", is_open=False),
     ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # Carte pour le graphique du nombre de passagers par ligne de métro
     dbc.Card([
-        dbc.CardHeader(html.H3("Prédiction de la température moyenne des lignes de métro à Londres", style={'color': 'white'})),
+        dbc.CardHeader(html.H3(
+            "Prédiction de la température moyenne des lignes de métro à Londres", style={'color': 'white'})),
         dbc.CardBody([
-            dbc.Button("Analyse", id="pred_open-analysis-button-2", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dbc.Button("Analyse", id="pred_open-analysis-button-2", color="info",
+                       className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(
                 id='metro-passenger-graph',
                 figure=generate_metro_passenger_graph(),
-                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+                style={'background-color': 'black',
+                       'border': '2px solid white', 'border-radius': '10px'}
             )
         ], style={'background-color': 'black'}),
         # Modal pour le deuxième graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse des prédictions de la température moyenne des lignes de métro à Londres")),
+            dbc.ModalHeader(dbc.ModalTitle(
+                "Analyse des prédictions de la température moyenne des lignes de métro à Londres")),
             dbc.ModalBody(id="pred_analysis-content-2"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="pred_close-analysis-button-2", className="ms-auto")),
+            dbc.ModalFooter(dbc.Button(
+                "Fermer", id="pred_close-analysis-button-2", className="ms-auto")),
         ], id="pred_analysis-modal-2", size="lg", is_open=False),
     ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # Ajout de la carte sauvegardée en HTML avec Slider
     html.Div([
-        html.H3("Carte des clusters en fonction du traffic de Londres", style={'color': 'white'}),
-        dbc.Button("Analyse", id="pred_open-analysis-button-3", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+        html.H3("Carte des clusters en fonction du traffic de Londres",
+                style={'color': 'white'}),
+        dbc.Button("Analyse", id="pred_open-analysis-button-3", color="info",
+                   className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
         dcc.Dropdown(
             id='year-dropdown',
-            options=[{'label': str(year), 'value': year} for year in range(1993, 2024)],
+            options=[{'label': str(year), 'value': year}
+                     for year in range(1993, 2024)],
             value=2023,  # Valeur initiale
             clearable=False,
             style={
@@ -331,22 +353,27 @@ layout = dbc.Container([
         ),
         html.Iframe(
             id='cluster-map-iframe',
-            srcDoc=open('static/traffic_pred/traffic_map_pred_2023.html', 'r').read(),
+            srcDoc=open(
+                'static/traffic_pred/traffic_map_pred_2023.html', 'r').read(),
             width="100%",
             height="600px",
             style={"border": "none", 'background-color': 'black'}
         ),
         # Modal pour la carte
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte des clusters en fonction du traffic de Londres")),
+            dbc.ModalHeader(dbc.ModalTitle(
+                "Analyse de la carte des clusters en fonction du traffic de Londres")),
             dbc.ModalBody(id="pred_analysis-content-3"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="pred_close-analysis-button-3", className="ms-auto")),
+            dbc.ModalFooter(dbc.Button(
+                "Fermer", id="pred_close-analysis-button-3", className="ms-auto")),
         ], id="pred_analysis-modal-3", size="lg", is_open=False),
     ], style={'background-color': 'black', 'margin-top': '20px'}),
     # Ajout de la carte sauvegardée en HTML
     html.Div([
-        html.H3("Carte des clusters de Londres en fonction des les ponts, tunnels et barrières routières à Londres qui ont des restrictions de hauteur", style={'color': 'white'}),
-        dbc.Button("Analyse", id="pred_open-analysis-button-4", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+        html.H3("Carte des clusters de Londres en fonction des les ponts, tunnels et barrières routières à Londres qui ont des restrictions de hauteur", style={
+                'color': 'white'}),
+        dbc.Button("Analyse", id="pred_open-analysis-button-4", color="info",
+                   className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
         html.Iframe(
             src='/static/london_clusters_map.html',
             width="100%",
@@ -355,47 +382,78 @@ layout = dbc.Container([
         )
     ], className="mt-4"),
     dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte des clusters de Londres en fonction des les ponts, tunnels et barrières routières à Londres qui ont des restrictions de hauteur")),
-            dbc.ModalBody(id="pred_analysis-content-4"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="pred_close-analysis-button-4", className="ms-auto")),
-        ], id="pred_analysis-modal-4", size="lg", is_open=False),
+        dbc.ModalHeader(dbc.ModalTitle(
+            "Analyse de la carte des clusters de Londres en fonction des les ponts, tunnels et barrières routières à Londres qui ont des restrictions de hauteur")),
+        dbc.ModalBody(id="pred_analysis-content-4"),
+        dbc.ModalFooter(dbc.Button(
+            "Fermer", id="pred_close-analysis-button-4", className="ms-auto")),
+    ], id="pred_analysis-modal-4", size="lg", is_open=False),
+
+    # Carte des clusters de Londres avec kmeans en fonction de HLE et de la PM2.5
+    html.Div([
+        html.H3("Carte des clusters de Londres (avec k-means) en fonction de l'espérance de vie en bonne santé et des particules PM2.5 à Londres", style={
+                'color': 'white'}),
+        dbc.Button("Analyse", id="pred_open-analysis-button-5", color="info",
+                   className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+        html.Iframe(
+            src='/static/london_health_map_clusters.html',
+            width="100%",
+            height="600px",
+            style={"border": "none"}
+        )
+    ], className="mt-4"),
+    dbc.Modal([
+        dbc.ModalHeader(dbc.ModalTitle(
+            "Analyse de la carte des clusters de Londres (avec k-means) en fonction de l'espérance de vie en bonne santé et des particules PM2.5 à Londres")),
+        dbc.ModalBody(id="pred_analysis-content-5"),
+        dbc.ModalFooter(dbc.Button(
+            "Fermer", id="pred_close-analysis-button-5", className="ms-auto")),
+    ], id="pred_analysis-modal-5", size="lg", is_open=False),
 
     # Graphique des prédictions de l'excès de poids
     dbc.Card([
-        dbc.CardHeader(html.H3("Prédictions de l'excès de poids par quartier", style={'color': 'white'})),
+        dbc.CardHeader(html.H3(
+            "Prédictions de l'excès de poids par quartier", style={'color': 'white'})),
         html.Div([
             html.Label("Sélectionnez un quartier :", style={'color': 'white'}),
             dcc.Dropdown(
                 id="city-dropdown",
-                options=[{'label': area, 'value': area} for area in get_available_areas()],
-                value="Barnet",  # Valeur initiale
+                options=[{'label': area, 'value': area}
+                         for area in get_available_areas()],
+                value="Barnet",
                 clearable=False,
                 style={
                     'width': '50%',
                     'margin': 'auto',
-                    'background-color': 'white',  # Fond blanc
-                    'color': 'black',  # Texte en noir
+                    'background-color': 'white',
+                    'color': 'black',
                 }
             )
         ], className="mb-4"),
         dbc.CardBody([
-            dbc.Button("Analyse", id="pred_open-analysis-button-5", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dbc.Button("Analyse", id="pred_open-analysis-button-6", color="info",
+                       className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(
                 id='weight-predictions-graph',
-                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+                style={'background-color': 'black',
+                       'border': '2px solid white', 'border-radius': '10px'}
             )
         ], style={'background-color': 'black'}),
         # Modal pour le troisième graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse des prédictions de l'excès de poids par quartier")),
-            dbc.ModalBody(id="pred_analysis-content-5"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="pred_close-analysis-button-5", className="ms-auto")),
-        ], id="pred_analysis-modal-5", size="lg", is_open=False),
-    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),    
+            dbc.ModalHeader(dbc.ModalTitle(
+                "Analyse des prédictions de l'excès de poids par quartier")),
+            dbc.ModalBody(id="pred_analysis-content-6"),
+            dbc.ModalFooter(dbc.Button(
+                "Fermer", id="pred_close-analysis-button-6", className="ms-auto")),
+        ], id="pred_analysis-modal-6", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
 ], fluid=True, style={'backgroundColor': 'black', 'color': 'white', 'minHeight': '100vh', 'padding': '20px'})
 
 # Callbacks pour gérer les modals
+
+
 def register_callbacks(app):
     @app.callback(
         Output('weight-predictions-graph', 'figure'),
@@ -405,8 +463,8 @@ def register_callbacks(app):
         return generate_weight_prediction_graph(selected_area)
 
     @app.callback(
-    Output('cluster-map-iframe', 'srcDoc'),
-    [Input('year-dropdown', 'value')]
+        Output('cluster-map-iframe', 'srcDoc'),
+        [Input('year-dropdown', 'value')]
     )
     def update_cluster_map(selected_year):
         file_path = f'static/traffic_pred/traffic_map_pred_{selected_year}.html'
@@ -414,10 +472,10 @@ def register_callbacks(app):
             map_html = file.read()
         return map_html
 
-
     def load_analysis(graphique_id):
-    
-        chemin_fichier = Path(f"analyse/prediction/analyse_graphique_{graphique_id}.html")
+
+        chemin_fichier = Path(
+            f"analyse/prediction/analyse_graphique_{graphique_id}.html")
         try:
             with open(chemin_fichier, "r", encoding="utf-8") as fichier:
                 return dcc.Markdown(
@@ -427,7 +485,7 @@ def register_callbacks(app):
         except FileNotFoundError:
             return dcc.Markdown("Aucune analyse disponible pour ce graphique.")
     # Callbacks pour les modals
-    for i in range(1, 6):  # 4 graphiques/carte => 4 modals
+    for i in range(1, 7):  # 4 graphiques/carte => 4 modals
         @app.callback(
             [Output(f"pred_analysis-modal-{i}", "is_open"),
              Output(f"pred_analysis-content-{i}", "children")],

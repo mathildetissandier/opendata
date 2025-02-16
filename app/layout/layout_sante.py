@@ -185,7 +185,7 @@ layout = dbc.Container([
                 className="mb-4"
             ),
             dbc.Button("Analyse", id="health_open-analysis-button-0",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
 
             html.Div([
                 html.Div([
@@ -215,7 +215,7 @@ layout = dbc.Container([
             html.H4("Évolution de l'espérance de vie en bonne santé (HLE) à Londres",
                     className="card-title", style={'color': 'white'}),
             dbc.Button("Analyse", id="health_open-analysis-button-1",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig1),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
@@ -234,7 +234,7 @@ layout = dbc.Container([
             html.H4("Comparaison des valeurs moyennes de l'HLE par zone géographique",
                     className="card-title", style={'color': 'white'}),
             dbc.Button("Analyse", id="health_open-analysis-button-2",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig2),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
@@ -261,7 +261,7 @@ layout = dbc.Container([
                 className="mb-4"
             ),
             dbc.Button("Analyse", id="health_open-analysis-button-3",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(id="weight-trend-graph"),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
@@ -280,7 +280,7 @@ layout = dbc.Container([
             html.H3("Inégalités du diagnostic tardif du VIH selon l'ethnie",
                     className="card-title", style={'color': 'white'}),
             dbc.Button("Analyse", id="health_open-analysis-button-4",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig_5),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
@@ -320,7 +320,7 @@ layout = dbc.Container([
                 className="mb-4"
             ),
             dbc.Button("Analyse", id="health_open-analysis-button-5",
-                       color="info", className="mb-3"),
+                       color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
 
             html.Div([
                 html.Iframe(

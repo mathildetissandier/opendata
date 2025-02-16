@@ -153,7 +153,7 @@ maps_borough = {'Barking and Dagenham': 'maps/Barking and Dagenham_map.html',
 # === Layout complet avec boutons "Analyse" et modals pour chaque graphique ===
 layout = dbc.Container([
     dbc.Button("⬅ Retour à l'accueil", href="/", color="primary", className="mb-3"),
-    html.H2("Les transports", className="text-center mb-4"),
+    html.H2("Indicateurs sur les transports à Londres", className="text-center mb-4"),
 
     # === Premier graphique ===
     html.Div([
@@ -269,33 +269,33 @@ layout = dbc.Container([
     ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
 
     # === Carte Folium ===
-html.Div([
-    html.H3("Ponts, tunnels, barrières routières - restrictions de hauteur"),
-    html.H3("Sélectionnez le type de carte :"),
-    dcc.Dropdown(
-        id='map-type-dropdown',
-        options=[
-            {'label': 'Carte avec Polygones', 'value': 'Polygones'},
-            {'label': 'Carte avec Marqueurs', 'value': 'Markers'}
-        ],
-        value='Polygones',
-        style={'width': '50%', 'color': 'black'}
-    ),
-    # Dropdown pour choisir le borough, visible seulement lorsque "Polygones" est sélectionné
     html.Div([
-        html.H3("Sélectionnez un quartier :"),
+        html.H3("Ponts, tunnels, barrières routières - restrictions de hauteur"),
+        html.H3("Sélectionnez le type de carte :"),
         dcc.Dropdown(
-            id='borough-dropdown',
+            id='map-type-dropdown',
             options=[
-                {'label': borough, 'value': borough} for borough in maps_borough.keys()
+                {'label': 'Carte avec Polygones', 'value': 'Polygones'},
+                {'label': 'Carte avec Marqueurs', 'value': 'Markers'}
             ],
-            value=None,
+            value='Polygones',
             style={'width': '50%', 'color': 'black'}
         ),
-    ], id='borough-dropdown-container', style={'display': 'none'}),
-    
-    # Bouton "Analyse" pour la carte
-    dbc.Button("Analyse", id="open-analysis-button-7", color="info", className="mb-3"),
+        # Dropdown pour choisir le borough, visible seulement lorsque "Polygones" est sélectionné
+        html.Div([
+            html.H3("Sélectionnez un quartier :"),
+            dcc.Dropdown(
+                id='borough-dropdown',
+                options=[
+                    {'label': borough, 'value': borough} for borough in maps_borough.keys()
+                ],
+                value=None,
+                style={'width': '50%', 'color': 'black'}
+            ),
+        ], id='borough-dropdown-container', style={'display': 'none'}),
+        
+        # Bouton "Analyse" pour la carte
+        dbc.Button("Analyse", id="open-analysis-button-7", color="info", className="mb-3"),
     
     # Carte Folium
     html.Iframe(
@@ -309,7 +309,30 @@ html.Div([
         dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-7", className="ms-auto")),  # Corrigé ici
     ], id="analysis-modal-7", size="lg", is_open=False),
     ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
+    # === Carte Folium pour le trafic routier ===
+    html.Div([
+    html.H3("Volume de trafic routier par borough à Londres"),
+    html.Label("Sélectionnez une année :"),
+    dcc.Dropdown(
+        id='traffic-year-dropdown',
+        options=[{'label': year, 'value': year} for year in range(1993, 2024)],
+        value=2023,  # Année par défaut
+        style={'width': '50%', 'color': 'black'}
+    ),
+    dbc.Button("Analyse", id="open-analysis-button-8", color="info", className="mb-3"),
+    html.Iframe(
+        id='traffic-map-iframe',
+        srcDoc=open('static/traffic/traffic_map_2023.html', 'r').read(),  # Assurez-vous que ce chemin est correct
+        style={'width': '100%', 'height': '600px', 'border': 'none'}
+    ),
 
+    # Modal pour la carte du trafic routier
+    dbc.Modal([
+        dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte du trafic routier")),
+        dbc.ModalBody(id="analysis-content-8"),
+        dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-8", className="ms-auto")),
+    ], id="analysis-modal-8", size="lg", is_open=False),
+], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
 
 ], fluid=True)
 
@@ -523,6 +546,7 @@ def update_map(map_type, borough):
     
     return map_html, dropdown_style
 
+
 @callback(
     Output('transport-public-graph', 'figure'),
     [Input('transport-public-graph', 'id')]
@@ -565,7 +589,22 @@ def transport_public(_):
     
     return fig
 
-for i in range(1, 8):  # 5 graphiques => 5 modals
+@callback(
+    Output('traffic-map-iframe', 'srcDoc'),
+    [Input('traffic-year-dropdown', 'value')]
+)
+def update_traffic_map(selected_year):
+    # Construire le chemin du fichier HTML en fonction de l'année sélectionnée
+    file_path = f'static/traffic/traffic_map_{selected_year}.html'
+
+    # Lire le fichier HTML et retourner son contenu
+    with open(file_path, 'r') as file:
+        map_html = file.read()
+
+    return map_html
+
+
+for i in range(1, 9):  # 5 graphiques => 5 modals
     @callback(
         [Output(f"analysis-modal-{i}", "is_open"),
          Output(f"analysis-content-{i}", "children")],

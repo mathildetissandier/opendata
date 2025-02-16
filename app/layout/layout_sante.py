@@ -105,11 +105,6 @@ hle_female_df['Negative Error Female'] = hle_female_df['Value'] - \
 hle_female_df['Positive Error Female'] = hle_female_df['Upper CI'] - \
     hle_female_df['Value']
 
-map_files = {
-    "HLE Male": "london_health_map_male.html",
-    "HLE Female": "london_health_map_female.html"
-}
-
 #####
 # Graphique 4 : Evolution du surpoids
 #####
@@ -172,6 +167,23 @@ layout = dbc.Container([
                 ],
                 value="HLE Male",
                 clearable=False,
+                className="mb-4"
+            ),
+
+            html.H4("Sélectionnez la période",
+                    className="card-title", style={'color': 'white'}),
+            dcc.RadioItems(
+                id="period-selector",
+                options=[
+                    {"label": str(year), "value": year} for year in sorted(hle_male_df["Time Period"].unique())
+                ],
+                value=sorted(hle_male_df["Time Period"].unique())[
+                    0],  # Valeur par défaut
+                labelStyle={
+                    "display": "inline-block",  # Pour afficher les boutons en ligne
+                    "margin-right": "10px",     # Espacement entre les boutons
+                    "color": "white"            # Couleur du texte
+                },
                 className="mb-4"
             ),
             dbc.Button("Analyse", id="health_open-analysis-button-0",
@@ -281,6 +293,59 @@ layout = dbc.Container([
             ], id="health_analysis-modal-4", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
+    ),
+
+    # Carte PM2.5
+    dbc.Card(
+        dbc.CardBody([
+            html.H4("Fraction de mortalité attribuable à la pollution atmosphérique par les particules PM2.5",
+                    className="card-title", style={'color': 'white'}),
+            html.H5(
+                "Sélectionnez un indicateur pour afficher la carte",
+                style={'color': 'white'}),
+            dcc.Dropdown(
+                id="pm25-dropdown",
+                options=[
+                    {"label": "Particules PM2.5 présentes en 2018",
+                     "value": "PM2.5 2018"},
+                    {"label": "Particules PM2.5 présentes en 2019",
+                     "value": "PM2.5 2019"},
+                    {"label": "Particules PM2.5 présentes en 2020",
+                     "value": "PM2.5 2020"},
+                    {"label": "Particules PM2.5 présentes en 2021",
+                     "value": "PM2.5 2021"},
+                    {"label": "Particules PM2.5 présentes en 2022",
+                     "value": "PM2.5 2022"}
+                ],
+                value="PM2.5 2022",
+                clearable=False,
+                className="mb-4"
+            ),
+            dbc.Button("Analyse", id="health_open-analysis-button-5",
+                       color="info", className="mb-3"),
+
+            html.Div([
+                html.Iframe(
+                    id="map-pm25",
+                    src="/static/london_pm25_map_2022.html",
+                    style={
+                        "width": "80%",
+                        "height": "650px",
+                        "margin": "auto",
+                        "display": "block"
+                    }
+                )
+            ], style={"display": "flex", "justifyContent": "center"}),
+
+            dbc.Modal([
+                dbc.ModalHeader(dbc.ModalTitle(
+                    "Analyse de la carte des particules PM2.5")),
+                dbc.ModalBody(id="health_analysis-content-5"),
+                dbc.ModalFooter(dbc.Button(
+                    "Fermer", id="health_close-analysis-button-5", className="ms-auto")),
+            ], id="health_analysis-modal-5", size="lg", is_open=False),
+        ], style={'backgroundColor': 'black'}),
+        className="mb-4 shadow"
     )
 ], fluid=True, style={'backgroundColor': 'black', 'color': 'white', 'minHeight': '100vh', 'padding': '20px'})
 
@@ -293,11 +358,16 @@ def register_callbacks(app):
     @app.callback(
         [Output("map", "src"),
          Output("confidence-graph", "figure")],
-        [Input("indicator-dropdown", "value")]
+        [Input("indicator-dropdown", "value"),
+         Input("period-selector", "value")]
     )
-    def update_content(selected_indicator):
+    def update_content(selected_indicator, selected_period):
+        # Filtrer les données en fonction de la période sélectionnée
         if selected_indicator == "HLE Male":
-            map_src = "/static/london_health_map_male.html"
+            filtered_df = hle_male_df[hle_male_df["Time Period"]
+                                      == selected_period]
+            # Carte dynamique pour l'année sélectionnée
+            map_src = f"/static/map_hle/london_health_map_male_{selected_period}.html"
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=hle_male_df['Time Period'], y=hle_male_df['Value'],
@@ -307,7 +377,10 @@ def register_callbacks(app):
                              arrayminus=hle_male_df['Negative Error Male'])
             ))
         else:
-            map_src = "/static/london_health_map_female.html"
+            filtered_df = hle_female_df[hle_female_df["Time Period"]
+                                        == selected_period]
+            # Carte dynamique pour l'année sélectionnée
+            map_src = f"/static/map_hle/london_health_map_female_{selected_period}.html"
             fig = go.Figure()
             fig.add_trace(go.Scatter(
                 x=hle_female_df['Time Period'], y=hle_female_df['Value'],
@@ -357,8 +430,26 @@ def register_callbacks(app):
 
         return fig
 
+    @app.callback(
+        [Output("map-pm25", "src")],
+        [Input("pm25-dropdown", "value")]
+    )
+    def update_map_PM25(selected_indicator):
+        if selected_indicator == "PM2.5 2022":
+            map_src = "/static/map_pm25/london_pm25_map_2022.html"
+        elif selected_indicator == "PM2.5 2021":
+            map_src = "/static/map_pm25/london_pm25_map_2021.html"
+        elif selected_indicator == "PM2.5 2020":
+            map_src = "/static/map_pm25/london_pm25_map_2020.html"
+        elif selected_indicator == "PM2.5 2019":
+            map_src = "/static/map_pm25/london_pm25_map_2019.html"
+        else:
+            map_src = "/static/map_pm25/london_pm25_map_2018.html"
+
+        return [map_src]
+
     # Callbacks pour les modals
-    for i in range(0, 5):
+    for i in range(0, 6):
         @app.callback(
             [Output(f"health_analysis-modal-{i}", "is_open"),
              Output(f"health_analysis-content-{i}", "children")],

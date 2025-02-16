@@ -1,10 +1,9 @@
-from dash import dcc, html
+from dash import dcc, html, callback_context, no_update, State
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.graph_objects as go
-from dash.dependencies import Input, Output
 import plotly.express as px
-from dash import callback_context, no_update
+from dash.dependencies import Input, Output
 
 #####
 # Graphique 1 : Evolution de l'espérence de vie moyenne homme/femme à Londres
@@ -177,12 +176,11 @@ layout = dbc.Container([
                 options=[
                     {"label": str(year), "value": year} for year in sorted(hle_male_df["Time Period"].unique())
                 ],
-                value=sorted(hle_male_df["Time Period"].unique())[
-                    0],  # Valeur par défaut
+                value=sorted(hle_male_df["Time Period"].unique())[0],
                 labelStyle={
-                    "display": "inline-block",  # Pour afficher les boutons en ligne
-                    "margin-right": "10px",     # Espacement entre les boutons
-                    "color": "white"            # Couleur du texte
+                    "display": "inline-block",
+                    "margin-right": "10px",
+                    "color": "white"
                 },
                 className="mb-4"
             ),
@@ -362,11 +360,7 @@ def register_callbacks(app):
          Input("period-selector", "value")]
     )
     def update_content(selected_indicator, selected_period):
-        # Filtrer les données en fonction de la période sélectionnée
         if selected_indicator == "HLE Male":
-            filtered_df = hle_male_df[hle_male_df["Time Period"]
-                                      == selected_period]
-            # Carte dynamique pour l'année sélectionnée
             map_src = f"/static/map_hle/london_health_map_male_{selected_period}.html"
             fig = go.Figure()
             fig.add_trace(go.Scatter(
@@ -377,9 +371,6 @@ def register_callbacks(app):
                              arrayminus=hle_male_df['Negative Error Male'])
             ))
         else:
-            filtered_df = hle_female_df[hle_female_df["Time Period"]
-                                        == selected_period]
-            # Carte dynamique pour l'année sélectionnée
             map_src = f"/static/map_hle/london_health_map_female_{selected_period}.html"
             fig = go.Figure()
             fig.add_trace(go.Scatter(
@@ -449,20 +440,28 @@ def register_callbacks(app):
         return [map_src]
 
     # Callbacks pour les modals
-    for i in range(0, 6):
+    for i in range(6):  # Pas besoin de range(0,6), range(6) suffit
         @app.callback(
             [Output(f"health_analysis-modal-{i}", "is_open"),
              Output(f"health_analysis-content-{i}", "children")],
             [Input(f"health_open-analysis-button-{i}", "n_clicks"),
              Input(f"health_close-analysis-button-{i}", "n_clicks")],
+            # Récupère l'état actuel du modal
+            [State(f"health_analysis-modal-{i}", "is_open")],
             prevent_initial_call=True
         )
-        def toggle_modal(open_clicks, close_clicks, i=i):
+        # idx=i pour éviter le problème de boucle
+        def toggle_modal(open_clicks, close_clicks, is_open, idx=i):
             ctx = callback_context
             if not ctx.triggered:
                 return no_update, no_update
+
             button_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-            if button_id == f"health_open-analysis-button-{i}":
-                analysis_text = f"Description spécifique pour le graphique {i}."
+            if button_id == f"health_open-analysis-button-{idx}":
+                analysis_text = f"Description spécifique pour le graphique {idx}."
                 return True, analysis_text
+            elif button_id == f"health_close-analysis-button-{idx}":
+                return False, no_update
+
+            return no_update, no_update

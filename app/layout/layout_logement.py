@@ -303,7 +303,7 @@ layout = dbc.Container([
         html.Div([
             # 📌 Colonne 1 : carte de l'évolution des logements vacants
                 html.Div([
-                html.H3("Carte de l'abordabilité des quartiers à Londres"),
+                html.H3("Carte des logements vacants à Londres"),
                 html.Label("Sélectionnez une année :"),
                 dcc.Slider(
                     id='year-slider-2',

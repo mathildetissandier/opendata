@@ -82,32 +82,29 @@ fig2.update_layout(
 # Graphique 3 : Cartes + Indicateur HLE avec intervalles de confiance
 #####
 
-# Charger les données pour les hommes
 file_path = "data/His indicators update Nov 2024 FINAL.xlsx"
+
 hle_male_df = pd.read_excel(file_path, sheet_name="1. HLE male")
 hle_male_df = hle_male_df[["Time Period",
                            "Area Name", "Value", "Lower CI", "Upper CI"]]
 hle_male_df.dropna(inplace=True)
 hle_male_df["Value"] = pd.to_numeric(hle_male_df["Value"], errors="coerce")
-
 hle_male_df['Negative Error Male'] = hle_male_df['Value'] - \
     hle_male_df['Lower CI']
 hle_male_df['Positive Error Male'] = hle_male_df['Upper CI'] - \
     hle_male_df['Value']
 
-# Charger les données pour les femmes
+
 hle_female_df = pd.read_excel(file_path, sheet_name="2. HLE female")
 hle_female_df = hle_female_df[["Time Period",
                                "Area Name", "Value", "Lower CI", "Upper CI"]]
 hle_female_df.dropna(inplace=True)
 hle_female_df["Value"] = pd.to_numeric(hle_female_df["Value"], errors="coerce")
-
 hle_female_df['Negative Error Female'] = hle_female_df['Value'] - \
     hle_female_df['Lower CI']
 hle_female_df['Positive Error Female'] = hle_female_df['Upper CI'] - \
     hle_female_df['Value']
 
-# Liste des cartes HTML (assurez-vous que ces fichiers existent dans le dossier static)
 map_files = {
     "HLE Male": "london_health_map_male.html",
     "HLE Female": "london_health_map_female.html"
@@ -118,7 +115,7 @@ map_files = {
 #####
 
 weight_df = pd.read_excel(file_path, sheet_name="5. Excess weight age 10-11")
-weight_df.dropna(subset=["Value"], inplace=True)  # Suppression des valeurs NaN
+weight_df.dropna(subset=["Value"], inplace=True)
 
 #####
 # Graphique 5 : Détection du HIV par éthnie
@@ -129,12 +126,11 @@ hiv_df = hiv_df[['Time Period', 'Ethnic group ', 'Value']]
 hiv_df = hiv_df.rename(columns={
                        'Time Period': 'Year', 'Ethnic group ': 'Ethnicity', 'Value': 'Late Diagnosis Rate'})
 
-# Création du graphique avec toutes les ethnies
 fig_5 = px.line(
     hiv_df,
     x='Year',
     y='Late Diagnosis Rate',
-    color='Ethnicity',  # Une courbe par ethnie
+    color='Ethnicity',
     markers=True,
     title="Évolution du diagnostic tardif du VIH par ethnie",
     labels={"Year": "Année",
@@ -179,8 +175,8 @@ layout = dbc.Container([
                 className="mb-4"
             ),
             dbc.Button("Analyse", id="health_open-analysis-button-0",
-                       color="info", className="mb-3"),  # Bouton Analyse pour la carte
-            # Carte + Graphique des intervalles de confiance
+                       color="info", className="mb-3"),
+
             html.Div([
                 html.Div([
                     html.Iframe(
@@ -191,7 +187,7 @@ layout = dbc.Container([
                     dcc.Graph(id="confidence-graph")
                 ], style={"width": "50%", "display": "inline-block"})
             ], style={"display": "flex"}),
-            # Modal pour la carte
+
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de la carte et du graphique des intervalles de confiance")),
@@ -211,7 +207,6 @@ layout = dbc.Container([
             dbc.Button("Analyse", id="health_open-analysis-button-1",
                        color="info", className="mb-3"),
             dcc.Graph(figure=fig1),
-            # Modal pour le premier graphique
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de l'évolution de l'espérance de vie en bonne santé")),
@@ -231,7 +226,6 @@ layout = dbc.Container([
             dbc.Button("Analyse", id="health_open-analysis-button-2",
                        color="info", className="mb-3"),
             dcc.Graph(figure=fig2),
-            # Modal pour le deuxième graphique
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de la comparaison par zone géographique")),
@@ -259,7 +253,6 @@ layout = dbc.Container([
             dbc.Button("Analyse", id="health_open-analysis-button-3",
                        color="info", className="mb-3"),
             dcc.Graph(id="weight-trend-graph"),
-            # Modal pour le troisième graphique
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de l'évolution de l'excès de poids")),
@@ -279,7 +272,6 @@ layout = dbc.Container([
             dbc.Button("Analyse", id="health_open-analysis-button-4",
                        color="info", className="mb-3"),
             dcc.Graph(figure=fig_5),
-            # Modal pour le quatrième graphique
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse des inégalités du diagnostic tardif du VIH")),
@@ -366,7 +358,7 @@ def register_callbacks(app):
         return fig
 
     # Callbacks pour les modals
-    for i in range(0, 5):  # 5 modals (0 pour la carte, 1-4 pour les graphiques)
+    for i in range(0, 5):
         @app.callback(
             [Output(f"health_analysis-modal-{i}", "is_open"),
              Output(f"health_analysis-content-{i}", "children")],
@@ -381,6 +373,5 @@ def register_callbacks(app):
             button_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
             if button_id == f"health_open-analysis-button-{i}":
-                # Retourner le contenu de l'analyse pour le graphique correspondant
                 analysis_text = f"Description spécifique pour le graphique {i}."
                 return True, analysis_text

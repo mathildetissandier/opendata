@@ -11,6 +11,8 @@ import branca
 import geopandas as gpd
 import folium
 import branca
+from pathlib import Path
+from dash import html
 
 # === Chargement des données pour le premier graphique (CSV) ===
 # Chemin du dossier contenant les fichiers CSV
@@ -128,6 +130,32 @@ maps_borough = {'Barking and Dagenham': 'maps/Barking and Dagenham_map.html',
  'Wandsworth': 'maps/Wandsworth_map.html',
  'Westminster': 'maps/Westminster_map.html'}
 
+
+# Charger les données
+df_crime = pd.read_csv('data/transport_crime.csv',sep=';')
+
+# Nettoyer les noms de colonnes (au cas où)
+df_crime.columns = df_crime.columns.str.strip()
+
+# Ajouter une colonne Année
+df_crime['Année'] = df_crime['Network-wide'].str.extract(r'FY(\d{4}/\d{2})')
+
+# Remplacer les virgules par des points et convertir en float
+cols_to_convert = ['Bus', 
+                   'London Underground / Docklands Light Railway', 
+                   'London Overground', 
+                   'London Tramlink']
+
+for col in cols_to_convert:
+    df_crime[col] = df_crime[col].str.replace(',', '.').astype(float)
+
+transport_options = [
+    {'label': 'Bus', 'value': 'Bus'},
+    {'label': 'London Underground / Docklands Light Railway', 'value': 'London Underground / Docklands Light Railway'},
+    {'label': 'London Overground', 'value': 'London Overground'},
+    {'label': 'London Tramlink', 'value': 'London Tramlink'}
+]
+
 ### premier graphique 
 
 # Exempté : Les personnes handicapées sont des véhicules exonérés d'impôt à condition qu'ils soient utilisés par des personnes 
@@ -153,188 +181,263 @@ maps_borough = {'Barking and Dagenham': 'maps/Barking and Dagenham_map.html',
 # === Layout complet avec boutons "Analyse" et modals pour chaque graphique ===
 layout = dbc.Container([
     dbc.Button("⬅ Retour à l'accueil", href="/", color="primary", className="mb-3"),
-    html.H2("Indicateurs sur les transports à Londres", className="text-center mb-4"),
+    html.H2("Indicateurs sur les transports à Londres", className="text-center mb-4", style={'color': 'white'}),
 
     # === Premier graphique ===
-    html.Div([
-        html.H3("Tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 1997"),
-        html.Label("Sélectionnez un quartier"),
-        dcc.Dropdown(
-            id='quartier-dropdown',
-            options=options_quartiers,
-            value=quartiers[0] if quartiers else None,
-            style={'width': '50%', 'padding': '3px', 'color': 'black'}
-        ),
-        dbc.Button("Analyse", id="open-analysis-button-1", color="info", className="mb-3"),
-        dcc.Graph(id='transport-graph'),
-        
+    dbc.Card([
+        dbc.CardHeader(html.H3("Tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 1997", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Sélectionnez un quartier", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='quartier-dropdown',
+                options=options_quartiers,
+                value=quartiers[0] if quartiers else None,
+                style={'width': '50%', 'padding': '3px', 'color': 'black'}
+            ),
+            dbc.Button("Analyse", id="open-analysis-button-1", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='transport-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le premier graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 1")),
-            dbc.ModalBody(id="analysis-content-1"),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse des tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 1997")),
+            dbc.ModalBody(id="analysis-content-1"),  # Contenu dynamique chargé ici
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-1", className="ms-auto")),
         ], id="analysis-modal-1", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # === Deuxième graphique ===
-    html.Div([
-        html.H3("Nombre de véhicules immatriculés (en milliers) à la fin de l'année ventilés par type, y compris les voitures, les motos, les marchandises légères, les marchandises lourdes, les autobus et les autocars, et autres"),
-        html.Label("Sélectionnez un quartier :"),
-        dcc.Dropdown(
-            id='area-dropdown',
-            options=[{'label': str(area), 'value': str(area)} for area in areas],
-            value=areas[0] if areas else None,
-            style={'width': '50%', 'color': 'black'}
-        ),
-        html.Label("Sélectionnez une ou plusieurs catégories de véhicules :"),
-        dcc.Dropdown(
-            id='vehicle-dropdown',
-            options=[{'label': category, 'value': category} for category in vehicle_categories],
-            value=[vehicle_categories[0]],
-            multi=True,
-            style={'width': '50%', 'color': 'black'}
-        ),
-        dbc.Button("Analyse", id="open-analysis-button-2", color="info", className="mb-3"),
-        dcc.Graph(id='evolution-graph'),
-        
+    dbc.Card([
+        dbc.CardHeader(html.H3("Nombre de véhicules immatriculés (en milliers) à la fin de l'année ventilés par type, y compris les voitures, les motos, les marchandises légères, les marchandises lourdes, les autobus et les autocars, et autres", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Sélectionnez un quartier :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='area-dropdown',
+                options=[{'label': str(area), 'value': str(area)} for area in areas],
+                value=areas[0] if areas else None,
+                style={'width': '50%', 'color': 'black'}
+            ),
+            html.Label("Sélectionnez une ou plusieurs catégories de véhicules :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='vehicle-dropdown',
+                options=[{'label': category, 'value': category} for category in vehicle_categories],
+                value=[vehicle_categories[0]],
+                multi=True,
+                style={'width': '50%', 'color': 'black'}
+            ),
+            dbc.Button("Analyse", id="open-analysis-button-2", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='evolution-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le deuxième graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 2")),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse du nombre de véhicules immatriculés (en milliers) à la fin de l'année ventilés par type, y compris les voitures, les motos, les marchandises légères, les marchandises lourdes, les autobus et les autocars, et autres")),
             dbc.ModalBody(id="analysis-content-2"),
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-2", className="ms-auto")),
         ], id="analysis-modal-2", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # === Graphique des locations de vélos (Bike Rentals) ===
-    html.Div([
-        html.H3("Évolution des locations de vélos par mois"),
-        dbc.Button("Analyse", id="open-analysis-button-3", color="info", className="mb-3"),
-        dcc.Graph(id='bike-rentals-graph'),
-        
+    dbc.Card([
+        dbc.CardHeader(html.H3("Évolution des locations de vélos par mois", style={'color': 'white'})),
+        dbc.CardBody([
+            dbc.Button("Analyse", id="open-analysis-button-3", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='bike-rentals-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le graphique des locations de vélos
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 3")),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse de l'évolution des locations de vélos par mois")),
             dbc.ModalBody(id="analysis-content-3"),
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-3", className="ms-auto")),
         ], id="analysis-modal-3", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
-     # === Graphique des températures du métro (Metro Temp) ===
-    html.Div([
-        html.H3("Évolution de la température moyenne par ligne de métro à Londres"),
-        dbc.Button("Analyse", id="open-analysis-button-4", color="info", className="mb-3"),
-        dcc.Graph(id='metro-temp-graph'),
-        
+    # === Graphique des températures du métro (Metro Temp) ===
+    dbc.Card([
+        dbc.CardHeader(html.H3("Évolution de la température moyenne des lignes de métro à Londres", style={'color': 'white'})),
+        dbc.CardBody([
+            dbc.Button("Analyse", id="open-analysis-button-4", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='metro-temp-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le graphique des températures du métro
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 4")),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse de l'évolution de la température moyenne des lignes de métro à Londres")),
             dbc.ModalBody(id="analysis-content-4"),
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-4", className="ms-auto")),
         ], id="analysis-modal-4", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # === Transport Public Graph ===
-    html.Div([
-        html.H3("Nombre de trajets sur le réseau de transport public par mois, par type de transport"),
-        dbc.Button("Analyse", id="open-analysis-button-5", color="info", className="mb-3"),
-        dcc.Graph(id='transport-public-graph'),
-        
+    dbc.Card([
+        dbc.CardHeader(html.H3("Nombre de trajets sur le réseau de transport public par mois, par type de transport", style={'color': 'white'})),
+        dbc.CardBody([
+            dbc.Button("Analyse", id="open-analysis-button-5", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='transport-public-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le graphique transport public
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 5")),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse de l'évolution de la température moyenne des lignes de métro à Londres")),
             dbc.ModalBody(id="analysis-content-5"),
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-5", className="ms-auto")),
         ], id="analysis-modal-5", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
     # === Cinquième graphique ===
-    html.Div([
-        html.H3("Volume de trafic estimé pour les voitures et tous les véhicules par autorité locale depuis 1993 (kilomètres)"),
-        html.Label("Sélectionnez une Route :"),
-        dcc.Dropdown(
-            id='route-dropdown',
-            options=[{'label': f"Route {route}", 'value': route} for route in df["Route"].unique()],
-            value=df["Route"].unique()[0],
-            style={'width': '50%', 'padding': '3px', 'color': 'black'}
-        ),
-        dbc.Button("Analyse", id="open-analysis-button-5", color="info", className="mb-3"),
-        dcc.Graph(id='route-graph'),
-        
+    dbc.Card([
+        dbc.CardHeader(html.H3("Volume de trafic estimé pour les voitures et tous les véhicules par autorité locale depuis 1993 (kilomètres)", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Sélectionnez une Route :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='route-dropdown',
+                options=[{'label': f"Route {route}", 'value': route} for route in df["Route"].unique()],
+                value=df["Route"].unique()[0],
+                style={'width': '50%', 'padding': '3px', 'color': 'black'}
+            ),
+            dbc.Button("Analyse", id="open-analysis-button-6", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='route-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
         # Modal pour le cinquième graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 5")),
-            dbc.ModalBody(id="analysis-content-5"),
-            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-5", className="ms-auto")),
-        ], id="analysis-modal-5", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px'}),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse du volume de trafic estimé pour les voitures et tous les véhicules par autorité locale depuis 1993 (kilomètres)")),
+            dbc.ModalBody(id="analysis-content-6"),
+            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-6", className="ms-auto")),
+        ], id="analysis-modal-6", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
-    # === Carte Folium ===
-    html.Div([
-        html.H3("Ponts, tunnels, barrières routières - restrictions de hauteur"),
-        html.H3("Sélectionnez le type de carte :"),
-        dcc.Dropdown(
-            id='map-type-dropdown',
-            options=[
-                {'label': 'Carte avec Polygones', 'value': 'Polygones'},
-                {'label': 'Carte avec Marqueurs', 'value': 'Markers'}
-            ],
-            value='Polygones',
-            style={'width': '50%', 'color': 'black'}
-        ),
-        # Dropdown pour choisir le borough, visible seulement lorsque "Polygones" est sélectionné
-        html.Div([
-            html.H3("Sélectionnez un quartier :"),
+    # === Comparaison des taux de criminalité par type de transport public et par mois ===
+    dbc.Card([
+        dbc.CardHeader(html.H3("Comparaison des taux de criminalité par type de transport public et par mois", style={'color': 'white'})),
+        dbc.CardBody([
+            dbc.Button("Analyse", id="open-analysis-button-7", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='crim-graph',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
+        # Modal pour le graphique de comparaison des taux de criminalité
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle("Analyse des taux de criminalité par type de transport public et par mois")),
+            dbc.ModalBody(id="analysis-content-7"),
+            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-7", className="ms-auto")),
+        ], id="analysis-modal-7", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
+
+    # === Comparaison des taux de transport à Londres ===
+    dbc.Card([
+        dbc.CardHeader(html.H3("Comparaison des taux de transport à Londres", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Choisissez le premier mode de transport :", style={'color': 'white'}),
             dcc.Dropdown(
-                id='borough-dropdown',
-                options=[
-                    {'label': borough, 'value': borough} for borough in maps_borough.keys()
-                ],
-                value=None,
+                id='transport-1',
+                options=transport_options,
+                value='Bus',  # Valeur par défaut
+                clearable=False,
                 style={'width': '50%', 'color': 'black'}
             ),
-        ], id='borough-dropdown-container', style={'display': 'none'}),
-        
-        # Bouton "Analyse" pour la carte
-        dbc.Button("Analyse", id="open-analysis-button-7", color="info", className="mb-3"),
-    
-    # Carte Folium
-    html.Iframe(
-        id='carte-iframe',
-        srcDoc=open(f'static/{map_files["Polygones"]}', 'r').read(),
-        style={'width': '100%', 'height': '600px', 'border': 'none'}
-    ),
-    dbc.Modal([
-        dbc.ModalHeader(dbc.ModalTitle("Analyse du graphique 7")),
-        dbc.ModalBody(id="analysis-content-7"),
-        dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-7", className="ms-auto")),  # Corrigé ici
-    ], id="analysis-modal-7", size="lg", is_open=False),
-    ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
+            html.Label("Choisissez le deuxième mode de transport :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='transport-2',
+                options=transport_options,
+                value='London Underground / Docklands Light Railway',  # Valeur par défaut
+                clearable=False,
+                style={'width': '50%', 'color': 'black'}
+            ),
+            dbc.Button("Analyse", id="open-analysis-button-8", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Graph(
+                id='scatter-plot',
+                style={'background-color': 'black', 'border': '2px solid white', 'border-radius': '10px'}
+            )
+        ], style={'background-color': 'black'}),
+        # Modal pour le graphique en nuage de points
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle("Analyse de la comparaison des taux de transport à Londres")),
+            dbc.ModalBody(id="analysis-content-8"),
+            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-8", className="ms-auto")),
+        ], id="analysis-modal-8", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
+
+    # === Carte Folium ===
+    dbc.Card([
+        dbc.CardHeader(html.H3("Ponts, tunnels, barrières routières - restrictions de hauteur", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Sélectionnez le type de carte :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='map-type-dropdown',
+                options=[
+                    {'label': 'Carte avec Polygones', 'value': 'Polygones'},
+                    {'label': 'Carte avec Marqueurs', 'value': 'Markers'}
+                ],
+                value='Polygones',
+                style={'width': '50%', 'color': 'black'}
+            ),
+            html.Div([
+                html.Label("Sélectionnez un quartier :", style={'color': 'white'}),
+                dcc.Dropdown(
+                    id='borough-dropdown',
+                    options=[{'label': borough, 'value': borough} for borough in maps_borough.keys()],
+                    value=None,
+                    style={'width': '50%', 'color': 'black'}
+                ),
+            ], id='borough-dropdown-container', style={'display': 'none'}),
+            dbc.Button("Analyse", id="open-analysis-button-9", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            html.Iframe(
+                id='carte-iframe',
+                srcDoc=open(f'static/{map_files["Polygones"]}', 'r').read(),
+                style={'width': '100%', 'height': '600px', 'border': 'none'}
+            )
+        ], style={'background-color': 'black'}),
+        # Modal pour la carte Folium
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle("Analyse des ponts, tunnels, barrières routières - restrictions de hauteur")),
+            dbc.ModalBody(id="analysis-content-9"),
+            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-9", className="ms-auto")),
+        ], id="analysis-modal-9", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-top': '20px'}),
+
     # === Carte Folium pour le trafic routier ===
-    html.Div([
-    html.H3("Volume de trafic routier par borough à Londres"),
-    html.Label("Sélectionnez une année :"),
-    dcc.Dropdown(
-        id='traffic-year-dropdown',
-        options=[{'label': year, 'value': year} for year in range(1993, 2024)],
-        value=2023,  # Année par défaut
-        style={'width': '50%', 'color': 'black'}
-    ),
-    dbc.Button("Analyse", id="open-analysis-button-8", color="info", className="mb-3"),
-    html.Iframe(
-        id='traffic-map-iframe',
-        srcDoc=open('static/traffic/traffic_map_2023.html', 'r').read(),  # Assurez-vous que ce chemin est correct
-        style={'width': '100%', 'height': '600px', 'border': 'none'}
-    ),
+    dbc.Card([
+        dbc.CardHeader(html.H3("Volume de trafic routier par borough à Londres", style={'color': 'white'})),
+        dbc.CardBody([
+            html.Label("Sélectionnez une année :", style={'color': 'white'}),
+            dcc.Dropdown(
+                id='traffic-year-dropdown',
+                options=[{'label': year, 'value': year} for year in range(1993, 2024)],
+                value=2023,  # Année par défaut
+                style={'width': '50%', 'color': 'black'}
+            ),
+            dbc.Button("Analyse", id="open-analysis-button-10", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            html.Iframe(
+                id='traffic-map-iframe',
+                srcDoc=open('static/traffic/traffic_map_2023.html', 'r').read(),
+                style={'width': '100%', 'height': '600px', 'border': 'none'}
+            )
+        ], style={'background-color': 'black'}),
+        # Modal pour la carte du trafic routier
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte du trafic routier")),
+            dbc.ModalBody(id="analysis-content-10"),
+            dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-10", className="ms-auto")),
+        ], id="analysis-modal-10", size="lg", is_open=False),
+    ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-top': '20px'}),
 
-    # Modal pour la carte du trafic routier
-    dbc.Modal([
-        dbc.ModalHeader(dbc.ModalTitle("Analyse de la carte du trafic routier")),
-        dbc.ModalBody(id="analysis-content-8"),
-        dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-8", className="ms-auto")),
-    ], id="analysis-modal-8", size="lg", is_open=False),
-], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-top': '20px'}),
+], fluid=True, style={'backgroundColor': 'black', 'color': 'white', 'minHeight': '100vh', 'padding': '20px'})
 
-], fluid=True)
 
 # === Callbacks ===
 
@@ -482,7 +585,7 @@ def update_metro_temp_graph(_):
                   x='Date', 
                   y='Passenger Count', 
                   color='Metro Line', 
-                  title="Evolution de la température moyenne par ligne de métro à Londres",
+                  title="Evolution de la température moyenne des lignes de métro à Londres",
                   labels={'Passenger Count': 'Température moyenne', 'Date': 'Date'},
                   markers=True)
     fig.update_layout(template='plotly_dark')
@@ -603,8 +706,64 @@ def update_traffic_map(selected_year):
 
     return map_html
 
+@callback(
+    Output('crim-graph', 'figure'),
+    [Input('crim-graph', 'id')]
+)
 
-for i in range(1, 9):  # 5 graphiques => 5 modals
+def crim_graphe(_):
+    df = pd.read_csv('data/transport_crime.csv',sep=';')
+
+    # Convertir les colonnes en types appropriés
+    df['Bus'] = df['Bus'].str.replace(',', '.').astype(float)
+    df['London Underground / Docklands Light Railway'] = df['London Underground / Docklands Light Railway'].str.replace(',', '.').astype(float)
+    df['London Overground'] = df['London Overground'].str.replace(',', '.').astype(float)
+    df['London Tramlink'] = df['London Tramlink'].str.replace(',', '.').astype(float)
+
+    # Transformer les données en format long pour Plotly
+    df_long = df.melt(id_vars=['Network-wide', 'Mois'], 
+                    value_vars=['Bus', 'London Underground / Docklands Light Railway', 'London Overground', 'London Tramlink'],
+                    var_name='Mode de transport', value_name='Taux')
+
+    # Créer un graphique en barres groupées
+    fig = px.bar(df_long, x='Mois', y='Taux', color='Mode de transport',
+                barmode='group',
+                title='Comparaison des taux de criminalité par type de transport public et par mois',
+                labels={'Taux': 'Taux', 'Mois': 'Mois'})
+    
+    fig.update_layout(template='plotly_dark')
+    return fig
+
+@callback(
+    Output('scatter-plot', 'figure'),
+    [Input('transport-1', 'value'),
+     Input('transport-2', 'value')]
+)
+def update_scatter_plot(transport_1, transport_2):
+    # Créer le graphique en nuage de points
+    fig = px.scatter(df_crime, x=transport_1, y=transport_2,
+                     title=f'Relation entre les taux de criminalité de {transport_1} et de {transport_2}',
+                     labels={transport_1: f'Taux de criminalité de {transport_1}', transport_2: f'Taux de criminalité de{transport_2}'},
+                     trendline='ols')  # Ajouter une ligne de régression
+    fig.update_layout(template='plotly_dark')
+    return fig
+
+
+def load_analysis(graphique_id):
+    """
+    Charge le contenu d'analyse pour un graphique donné.
+    """
+    chemin_fichier = Path(f"analyse/transport/analyse_graphique_{graphique_id}.html")
+    try:
+        with open(chemin_fichier, "r", encoding="utf-8") as fichier:
+            return dcc.Markdown(
+                fichier.read(),
+                dangerously_allow_html=True  # Autorise l'utilisation de HTML
+            )
+    except FileNotFoundError:
+        return dcc.Markdown("Aucune analyse disponible pour ce graphique.")
+
+for i in range(1, 11):  # 10 graphiques => 10 modals
     @callback(
         [Output(f"analysis-modal-{i}", "is_open"),
          Output(f"analysis-content-{i}", "children")],
@@ -616,11 +775,12 @@ for i in range(1, 9):  # 5 graphiques => 5 modals
         ctx = callback_context
         if not ctx.triggered:
             return no_update, no_update
+        
         button_id = ctx.triggered[0]["prop_id"].split(".")[0]
         
         if button_id == f"open-analysis-button-{i}":
-            # Retourner le contenu de l'analyse pour le graphique correspondant
-            analysis_text = f"Description spécifique pour le graphique {i}."
+            # Charger l'analyse spécifique pour ce graphique
+            analysis_text = load_analysis(i)  # Utiliser la fonction pour charger le fichier
             return True, analysis_text
         elif button_id == f"close-analysis-button-{i}":
             return False, no_update

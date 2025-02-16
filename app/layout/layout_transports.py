@@ -185,7 +185,7 @@ layout = dbc.Container([
 
     # === Premier graphique ===
     dbc.Card([
-        dbc.CardHeader(html.H3("Tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 1997", style={'color': 'white'})),
+        dbc.CardHeader(html.H3("Tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 2008", style={'color': 'white'})),
         dbc.CardBody([
             html.Label("Sélectionnez un quartier", style={'color': 'white'}),
             dcc.Dropdown(
@@ -202,7 +202,7 @@ layout = dbc.Container([
         ], style={'background-color': 'black'}),
         # Modal pour le premier graphique
         dbc.Modal([
-            dbc.ModalHeader(dbc.ModalTitle("Analyse des tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 1997")),
+            dbc.ModalHeader(dbc.ModalTitle("Analyse des tendances du nombre total de véhicules de marchandises privées ou légères à la fin de l'année depuis 2008")),
             dbc.ModalBody(id="analysis-content-1"),  # Contenu dynamique chargé ici
             dbc.ModalFooter(dbc.Button("Fermer", id="close-analysis-button-1", className="ms-auto")),
         ], id="analysis-modal-1", size="lg", is_open=False),

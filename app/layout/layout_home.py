@@ -14,7 +14,8 @@ layout = dbc.Container([
         dbc.Col(
             dbc.Card(
                 dbc.CardBody([
-                    html.H5("Transports", className="card-title text-center", style={'color': 'gray'}),
+                    html.H5("Transports", className="card-title text-center",
+                            style={'color': 'gray', 'fontSize': '24px'}),
                     dcc.Link(
                         html.Img(
                             src="/assets/transports.png",
@@ -38,7 +39,8 @@ layout = dbc.Container([
         dbc.Col(
             dbc.Card(
                 dbc.CardBody([
-                    html.H5("Logement", className="card-title text-center", style={'color': 'gray'}),
+                    html.H5("Logement", className="card-title text-center",
+                            style={'color': 'gray', 'fontSize': '24px'}),
                     dcc.Link(
                         html.Img(
                             src="/assets/logement.png",
@@ -64,7 +66,8 @@ layout = dbc.Container([
         dbc.Col(
             dbc.Card(
                 dbc.CardBody([
-                    html.H5("Santé", className="card-title text-center", style={'color': 'gray'}),
+                    html.H5("Santé", className="card-title text-center",
+                            style={'color': 'gray', 'fontSize': '24px'}),
                     dcc.Link(
                         html.Img(
                             src="/assets/sante.png",
@@ -89,7 +92,7 @@ layout = dbc.Container([
             dbc.Card(
                 dbc.CardBody([
                     html.H5("Prédictions et Clustering",
-                            className="card-title text-center", style={'color': 'gray'}),
+                            className="card-title text-center", style={'color': 'gray', 'fontSize': '24px'}),
                     dcc.Link(
                         html.Img(
                             src="/assets/predictions.png",
@@ -111,4 +114,5 @@ layout = dbc.Container([
             ), width=6, md=6, className="mb-4"
         )
     ])
-], fluid=True, style={'background-color': 'black', 'height': '100vh'})  # Fond noir pour la page
+    # Fond noir pour la page
+], fluid=True, style={'background-color': 'black', 'height': '100vh'})

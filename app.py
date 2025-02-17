@@ -11,22 +11,28 @@ from layout.layout_transports import layout
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[
                 dbc.themes.FLATLY], suppress_callback_exceptions=True)
-#server = app.server
+# server = app.server
 
 # Mise en page avec navigation
+
+
 def serve_layout():
     return html.Div(
-        style={'backgroundColor': 'black', 'color': 'white'},  # Fond noir, texte en blanc
+        # Fond noir, texte en blanc
+        style={'backgroundColor': 'black', 'color': 'white'},
         children=[
             dcc.Location(id='url', refresh=False),
             dbc.Container(id='page-content', fluid=True)
         ]
     )
 
+
 app.layout = serve_layout
 layout_sante.register_callbacks(app)
 layout_predictions.register_callbacks(app)
 # Callback pour gérer la navigation
+
+
 @app.callback(
     Output('page-content', 'children'),
     [Input('url', 'pathname')]
@@ -43,6 +49,7 @@ def display_page(pathname):
     else:
         return layout_home.layout
 
+
 # Lancer l'application
-#if __name__ == '__main__':
-    #app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=True)

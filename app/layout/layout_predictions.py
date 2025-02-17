@@ -12,6 +12,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from dash.dependencies import Input, Output
 from pathlib import Path
+import folium
+import branca.colormap as cm
+from sklearn.cluster import KMeans
+import geopandas as gpd
 
 warnings.filterwarnings("ignore")
 
@@ -277,6 +281,128 @@ def get_available_areas():
     return weight_df["Area Name"].unique()
 
 
+#### carte 
+
+def create_map(n_clusters, year):
+    # Chargement des fichiers
+    average_price2 = pd.read_excel("data/average_price2.xlsx")
+    sales_volume2 = pd.read_excel("data/sales_volume2.xlsx")
+    vacants = pd.read_excel("data/vacants.xlsx")
+    vacants = vacants.map(lambda x: str(x).replace("\t", "") if isinstance(x, str) else x)
+    crimes2 = pd.read_excel("data/crimes2.xlsx")
+    affordability = pd.read_excel("data/affordability.xlsx")
+
+    # Filtrer chaque dataframe pour garder les années entre 2010 et 2023
+    average_price2 = average_price2[(average_price2["Year"] >= 2010) & (average_price2["Year"] <= 2023)]
+    sales_volume2 = sales_volume2[(sales_volume2["Year"] >= 2010) & (sales_volume2["Year"] <= 2023)]
+    vacants = vacants[(vacants["Year"] >= 2010) & (vacants["Year"] <= 2023)]
+    crimes2 = crimes2[(crimes2["Year"] >= 2010) & (crimes2["Year"] <= 2023)]
+    affordability = affordability[(affordability["Year"] >= 2010) & (affordability["Year"] <= 2023)]
+
+    # Fonction pour transformer les DataFrames en format long
+    def transform_to_long(df, value_name):
+        return df.melt(id_vars=["Year"], var_name="Quartier", value_name=value_name)
+
+    # Transformer chaque DataFrame
+    average_price_long = transform_to_long(average_price2, "AveragePrice")
+    sales_volume_long = transform_to_long(sales_volume2, "SalesVolume")
+    vacants_long = transform_to_long(vacants, "Vacants")
+    affordability_long = transform_to_long(affordability, "Affordability")
+
+    # Fusionner les DataFrames
+    df = average_price_long.merge(sales_volume_long, on=["Year", "Quartier"])\
+                           .merge(vacants_long, on=["Year", "Quartier"])\
+                           .merge(affordability_long, on=["Year", "Quartier"])
+
+    # Copie des données originales
+    df_original = df.copy()
+
+    # Normalisation des données
+    scaler = StandardScaler()
+    features = df.columns.difference(['Year', 'Quartier'])
+    df[features] = scaler.fit_transform(df[features])
+
+    # Fonction pour appliquer le clustering
+    def apply_clustering(df, df_original, year, n_clusters):
+        df_year = df[df["Year"] == year].copy()
+        df_year_original = df_original[df_original["Year"] == year].copy()
+
+        # Appliquer le clustering
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        df_year["Cluster"] = kmeans.fit_predict(df_year[features])
+
+        # Ajouter la colonne "Cluster" à df_year_original
+        df_year_original["Cluster"] = df_year["Cluster"].values  
+
+        return df_year, df_year_original
+
+    # Fonction pour ajouter les caractéristiques des clusters
+    def add_cluster_characteristics(df_year, df_year_original):
+        # Ajouter les valeurs moyennes non normalisées pour chaque cluster
+        cluster_means = df_year_original.groupby("Cluster")[["AveragePrice", "SalesVolume", "Vacants", "Affordability"]].mean()
+        cluster_means = cluster_means.add_suffix("_mean").reset_index()
+
+        df_year = df_year.merge(cluster_means, on="Cluster", how="left")
+        return df_year
+
+    # Fonction pour créer la carte des clusters
+    def create_cluster_map(df_year, df_year_original, n_clusters):
+        m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+
+        # Ajouter les caractéristiques des clusters à df_year avec les valeurs non normalisées
+        df_year = add_cluster_characteristics(df_year, df_year_original)
+
+        # Fusionner avec gdf (GeoDataFrame des quartiers)
+        gdf = gpd.read_file('data/london_boroughs.geojson')
+        gdf = gdf.rename(columns={"name": "Quartier"})
+        gdf_merged = gdf.merge(df_year, on="Quartier", how="left")
+
+        # Échelle de couleurs pour les clusters
+        colormap = cm.linear.Set1_09.scale(0, n_clusters-1)
+
+        # Ajouter chaque quartier à la carte avec la couleur du cluster
+        for _, row in gdf_merged.iterrows():
+            color = colormap(row["Cluster"]) if pd.notna(row["Cluster"]) else "grey"
+
+            # Tooltip enrichi avec les moyennes des clusters
+            tooltip_text = f"""
+            <h4>{row['Quartier']}</h4>
+            <b>Cluster:</b> {row['Cluster']}<br>
+            <b>Prix Moyen:</b> {row['AveragePrice_mean']:.2f}<br>
+            <b>Volume des Ventes:</b> {row['SalesVolume_mean']:.2f}<br>
+            <b>Vacants:</b> {row['Vacants_mean']:.2f}<br>
+            <b>Abordabilité:</b> {row['Affordability_mean']:.2f}
+            """
+
+            folium.GeoJson(
+                row["geometry"],
+                style_function=lambda feature, color=color: {
+                    "fillColor": color,
+                    "color": "black",
+                    "weight": 0.3,
+                    "fillOpacity": 0.9
+                },
+                tooltip=folium.Tooltip(tooltip_text, sticky=True),
+            ).add_to(m)
+
+        # Ajouter la légende
+        colormap.caption = f"Clusters des quartiers en {df_year['Year'].iloc[0]}"
+        m.add_child(colormap)
+
+        return m
+
+    # Appliquer le clustering et obtenir les résultats
+    df_year, df_year_original = apply_clustering(df, df_original, year, n_clusters)
+
+    # Créer et retourner la carte
+    return create_cluster_map(df_year, df_year_original, n_clusters)
+
+# Fonction pour rendre la carte en HTML
+def render_map_html(nb_clusters,year):
+    m = create_map(nb_clusters,year)
+    return m._repr_html_()
+
+
 # Layout avec fond noir partout
 layout = dbc.Container([
     dbc.Button("⬅ Retour à l'accueil", href="/",
@@ -449,10 +575,48 @@ layout = dbc.Container([
         ], id="pred_analysis-modal-6", size="lg", is_open=False),
     ], style={'background-color': 'black', 'border': '1px solid #444', 'margin-bottom': '20px'}),
 
+        # Carte des clusters de Londres avec kmeans en fonction de HLE et de la PM2.5
+        html.Div([
+            html.H3("Carte des clusters de Londres (avec k-means) en fonction des données sur le logement", style={
+                    'color': 'white'}),
+            dbc.Button("Analyse", id="pred_open-analysis-button-7", color="info",
+                    className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
+            dcc.Slider(
+                id='years-slider',
+                min=2,
+                max=10,
+                value=3,
+                marks={i: str(i) for i in range(2, 10,1)},
+                step=1
+            ),
+            dcc.Slider(
+                id='years-slider-2',
+                min=2010,
+                max=2023,
+                value=2023,
+                marks={i: str(i) for i in range(2010, 2023,1)},
+                step=1
+            ),
+            html.Iframe(
+                id = 'clusturing-map',
+                srcDoc=render_map_html(3,2023),
+                width="100%",
+                height="600px",
+                style={"border": "none"}
+            )
+        ], className="mt-4"),
+        dbc.Modal([
+            dbc.ModalHeader(dbc.ModalTitle(
+                "Analyse de la carte des clusters de Londres (avec k-means) en fonction des données sur le logement")),
+            dbc.ModalBody(id="pred_analysis-content-7"),
+            dbc.ModalFooter(dbc.Button(
+                "Fermer", id="pred_close-analysis-button-7", className="ms-auto")),
+        ], id="pred_analysis-modal-7", size="lg", is_open=False),
+    
+
 ], fluid=True, style={'backgroundColor': 'black', 'color': 'white', 'minHeight': '100vh', 'padding': '20px'})
 
 # Callbacks pour gérer les modals
-
 
 def register_callbacks(app):
     @app.callback(
@@ -471,6 +635,14 @@ def register_callbacks(app):
         with open(file_path, 'r') as file:
             map_html = file.read()
         return map_html
+    
+    # Callback Dash pour mettre à jour la carte en fonction de l'année
+    @app.callback(
+        Output('clusturing-map', 'srcDoc'),
+        [Input('years-slider', 'value'),Input('years-slider-2', 'value')]
+    )
+    def update_map(nb_clusters,year):
+        return render_map_html(nb_clusters,year)
 
     def load_analysis(graphique_id):
 
@@ -485,7 +657,7 @@ def register_callbacks(app):
         except FileNotFoundError:
             return dcc.Markdown("Aucune analyse disponible pour ce graphique.")
     # Callbacks pour les modals
-    for i in range(1, 7):  # 4 graphiques/carte => 4 modals
+    for i in range(1, 8):  # 4 graphiques/carte => 4 modals
         @app.callback(
             [Output(f"pred_analysis-modal-{i}", "is_open"),
              Output(f"pred_analysis-content-{i}", "children")],

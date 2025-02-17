@@ -70,10 +70,12 @@ from layout.layout_transports import layout
 import os
 
 # Initialisation de l'application Dash avec un thème Bootstrap
-server = Flask(__name__)
-app = dash.Dash(__name__, server=server, external_stylesheets=[
+# server = Flask(__name__)
+
+
+app = dash.Dash(__name__, external_stylesheets=[
                 dbc.themes.FLATLY], suppress_callback_exceptions=True)
-# server = app.server
+server = app.server
 
 # Mise en page avec navigation
 
@@ -116,4 +118,4 @@ port = int(os.environ.get("PORT", 8050))
 
 # Lancer l'application
 if __name__ == '__main__':
-    app.run_server(debug=False, host="0.0.0.0", port=port)
+    app.run_server(host="0.0.0.0", port=port)

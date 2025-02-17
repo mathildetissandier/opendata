@@ -2,7 +2,7 @@ dash
 dash-bootstrap-components
 plotly
 pandas
-numpy
+numpy==1.23.5
 scikit-learn
 xgboost
 statsmodels

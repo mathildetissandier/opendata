@@ -8,9 +8,10 @@ from layout import layout_home, layout_logement, layout_sante, layout_prediction
 from layout.layout_transports import layout
 
 # Initialisation de l'application Dash avec un thème Bootstrap
-server = Flask(__name__)
+#server = Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[
                 dbc.themes.FLATLY], suppress_callback_exceptions=True)
+server = app.server
 
 # Mise en page avec navigation
 def serve_layout():

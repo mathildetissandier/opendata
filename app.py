@@ -6,6 +6,7 @@ from flask import Flask
 from layout import layout_home, layout_logement, layout_sante, layout_predictions
 # Assurez-vous d'importer la variable 'layout' définie dans layout_transports
 from layout.layout_transports import layout
+import os
 
 # Initialisation de l'application Dash avec un thème Bootstrap
 server = Flask(__name__)
@@ -50,6 +51,13 @@ def display_page(pathname):
         return layout_home.layout
 
 
-# Lancer l'application
+# Render utilise une variable d'env PORT
+port = int(os.environ.get("PORT", 8080))
+
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False, host="0.0.0.0", port=port)
+
+
+'''# Lancer l'application
+if __name__ == '__main__':
+    app.run_server(debug=True)'''

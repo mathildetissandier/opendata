@@ -16,3 +16,4 @@ openpyxl
 gunicorn==20.1.0
 pip>=25.0.1
 xlrd>=2.0.1
+openpyxl>=3.0.0

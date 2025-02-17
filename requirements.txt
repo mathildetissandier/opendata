@@ -1,6 +1,7 @@
-dash==2.0.0
-dash-bootstrap-components==1.0.0
-Flask==2.1.3
-gunicorn==20.1.0
-Werkzeug==2.0.3
-pandas==1.3.3 
+dash
+dash-bootstrap-components
+Flask
+gunicorn
+Werkzeug
+pandas
+numpy

@@ -15,14 +15,17 @@ layout = dbc.Container([
             dbc.Card(
                 dbc.CardBody([
                     html.H5("Transports", className="card-title text-center",
-                            style={'color': 'gray', 'fontSize': '24px'}),
+                            style={'color': 'white', 'fontSize': '24px'}),
                     dcc.Link(
-                        html.Img(
-                            src="/assets/transports.png",
-                            style={
-                                "width": "40%",
-                                "padding": "10px",  # Espace autour de l'image
-                            }
+                        html.Div(
+                            html.Img(
+                                src="/assets/transports.png",
+                                style={
+                                    "width": "40%",
+                                    "padding": "10px",  # Espace autour de l'image
+                                }
+                            ),
+                            style={"background-color": "black", "border-radius": "10px"}  # Fond noir derrière l'image
                         ),
                         href="/transports"
                     )
@@ -30,7 +33,7 @@ layout = dbc.Container([
                 className="shadow-lg text-center",
                 style={
                     "cursor": "pointer",
-                    "background-color": "#f0f0f0",  # Fond gris clair pour la carte
+                    "background-color": "black",  # Fond noir pour la carte
                     "border": "none",  # Supprimer la bordure par défaut
                     "border-radius": "10px"  # Coins arrondis
                 }
@@ -40,14 +43,17 @@ layout = dbc.Container([
             dbc.Card(
                 dbc.CardBody([
                     html.H5("Logement", className="card-title text-center",
-                            style={'color': 'gray', 'fontSize': '24px'}),
+                            style={'color': 'white', 'fontSize': '24px'}),
                     dcc.Link(
-                        html.Img(
-                            src="/assets/logement.png",
-                            style={
-                                "width": "40%",
-                                "padding": "10px",  # Espace autour de l'image
-                            }
+                        html.Div(
+                            html.Img(
+                                src="/assets/logement.png",
+                                style={
+                                    "width": "40%",
+                                    "padding": "10px",  # Espace autour de l'image
+                                }
+                            ),
+                            style={"background-color": "black", "border-radius": "10px"}  # Fond noir derrière l'image
                         ),
                         href="/logement"
                     )
@@ -55,7 +61,7 @@ layout = dbc.Container([
                 className="shadow-lg text-center",
                 style={
                     "cursor": "pointer",
-                    "background-color": "#f0f0f0",  # Fond gris clair pour la carte
+                    "background-color": "black",  # Fond noir pour la carte
                     "border": "none",  # Supprimer la bordure par défaut
                     "border-radius": "10px"  # Coins arrondis
                 }
@@ -67,14 +73,17 @@ layout = dbc.Container([
             dbc.Card(
                 dbc.CardBody([
                     html.H5("Santé", className="card-title text-center",
-                            style={'color': 'gray', 'fontSize': '24px'}),
+                            style={'color': 'white', 'fontSize': '24px'}),
                     dcc.Link(
-                        html.Img(
-                            src="/assets/sante.png",
-                            style={
-                                "width": "40%",
-                                "padding": "10px",  # Espace autour de l'image
-                            }
+                        html.Div(
+                            html.Img(
+                                src="/assets/sante.png",
+                                style={
+                                    "width": "40%",
+                                    "padding": "10px",  # Espace autour de l'image
+                                }
+                            ),
+                            style={"background-color": "black", "border-radius": "10px"}  # Fond noir derrière l'image
                         ),
                         href="/sante"
                     )
@@ -82,7 +91,7 @@ layout = dbc.Container([
                 className="shadow-lg text-center",
                 style={
                     "cursor": "pointer",
-                    "background-color": "#f0f0f0",  # Fond gris clair pour la carte
+                    "background-color": "black",  # Fond noir pour la carte
                     "border": "none",  # Supprimer la bordure par défaut
                     "border-radius": "10px"  # Coins arrondis
                 }
@@ -92,14 +101,17 @@ layout = dbc.Container([
             dbc.Card(
                 dbc.CardBody([
                     html.H5("Prédictions et Clustering",
-                            className="card-title text-center", style={'color': 'gray', 'fontSize': '24px'}),
+                            className="card-title text-center", style={'color': 'white', 'fontSize': '24px'}),
                     dcc.Link(
-                        html.Img(
-                            src="/assets/predictions.png",
-                            style={
-                                "width": "40%",
-                                "padding": "10px",  # Espace autour de l'image
-                            }
+                        html.Div(
+                            html.Img(
+                                src="/assets/predictions.png",
+                                style={
+                                    "width": "40%",
+                                    "padding": "10px",  # Espace autour de l'image
+                                }
+                            ),
+                            style={"background-color": "black", "border-radius": "10px"}  # Fond noir derrière l'image
                         ),
                         href="/predictions"
                     )
@@ -107,7 +119,7 @@ layout = dbc.Container([
                 className="shadow-lg text-center",
                 style={
                     "cursor": "pointer",
-                    "background-color": "#f0f0f0",  # Fond gris clair pour la carte
+                    "background-color": "black",  # Fond noir pour la carte
                     "border": "none",  # Supprimer la bordure par défaut
                     "border-radius": "10px"  # Coins arrondis
                 }
@@ -115,4 +127,4 @@ layout = dbc.Container([
         )
     ])
     # Fond noir pour la page
-], fluid=True, style={'background-color': 'black', 'height': '100vh'})
+], fluid=True, style={'background-color': 'black', 'height': '100vh', 'padding': '0', 'margin': '0'})

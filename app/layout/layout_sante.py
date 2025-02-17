@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from dash.dependencies import Input, Output
+from pathlib import Path
 
 #####
 # Graphique 1 : Evolution de l'espérence de vie moyenne homme/femme à Londres
@@ -184,7 +185,7 @@ layout = dbc.Container([
                 },
                 className="mb-4"
             ),
-            dbc.Button("Analyse", id="health_open-analysis-button-0",
+            dbc.Button("Analyse", id="health_open-analysis-button-1",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
 
             html.Div([
@@ -201,10 +202,10 @@ layout = dbc.Container([
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de la carte et du graphique des intervalles de confiance")),
-                dbc.ModalBody(id="health_analysis-content-0"),
+                dbc.ModalBody(id="health_analysis-content-1"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-0", className="ms-auto")),
-            ], id="health_analysis-modal-0", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-1", className="ms-auto")),
+            ], id="health_analysis-modal-1", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
@@ -214,16 +215,16 @@ layout = dbc.Container([
         dbc.CardBody([
             html.H4("Évolution de l'espérance de vie en bonne santé (HLE) à Londres",
                     className="card-title", style={'color': 'white'}),
-            dbc.Button("Analyse", id="health_open-analysis-button-1",
+            dbc.Button("Analyse", id="health_open-analysis-button-2",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig1),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de l'évolution de l'espérance de vie en bonne santé")),
-                dbc.ModalBody(id="health_analysis-content-1"),
+                dbc.ModalBody(id="health_analysis-content-2"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-1", className="ms-auto")),
-            ], id="health_analysis-modal-1", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-2", className="ms-auto")),
+            ], id="health_analysis-modal-2", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
@@ -233,16 +234,16 @@ layout = dbc.Container([
         dbc.CardBody([
             html.H4("Comparaison des valeurs moyennes de l'HLE par zone géographique",
                     className="card-title", style={'color': 'white'}),
-            dbc.Button("Analyse", id="health_open-analysis-button-2",
+            dbc.Button("Analyse", id="health_open-analysis-button-3",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig2),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de la comparaison par zone géographique")),
-                dbc.ModalBody(id="health_analysis-content-2"),
+                dbc.ModalBody(id="health_analysis-content-3"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-2", className="ms-auto")),
-            ], id="health_analysis-modal-2", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-3", className="ms-auto")),
+            ], id="health_analysis-modal-3", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
@@ -260,16 +261,16 @@ layout = dbc.Container([
                 clearable=False,
                 className="mb-4"
             ),
-            dbc.Button("Analyse", id="health_open-analysis-button-3",
+            dbc.Button("Analyse", id="health_open-analysis-button-4",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(id="weight-trend-graph"),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de l'évolution de l'excès de poids")),
-                dbc.ModalBody(id="health_analysis-content-3"),
+                dbc.ModalBody(id="health_analysis-content-4"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-3", className="ms-auto")),
-            ], id="health_analysis-modal-3", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-4", className="ms-auto")),
+            ], id="health_analysis-modal-4", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
@@ -279,16 +280,16 @@ layout = dbc.Container([
         dbc.CardBody([
             html.H3("Inégalités du diagnostic tardif du VIH selon l'ethnie",
                     className="card-title", style={'color': 'white'}),
-            dbc.Button("Analyse", id="health_open-analysis-button-4",
+            dbc.Button("Analyse", id="health_open-analysis-button-5",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             dcc.Graph(figure=fig_5),
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse des inégalités du diagnostic tardif du VIH")),
-                dbc.ModalBody(id="health_analysis-content-4"),
+                dbc.ModalBody(id="health_analysis-content-5"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-4", className="ms-auto")),
-            ], id="health_analysis-modal-4", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-5", className="ms-auto")),
+            ], id="health_analysis-modal-5", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     ),
@@ -319,7 +320,7 @@ layout = dbc.Container([
                 clearable=False,
                 className="mb-4"
             ),
-            dbc.Button("Analyse", id="health_open-analysis-button-5",
+            dbc.Button("Analyse", id="health_open-analysis-button-6",
                        color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
 
             html.Div([
@@ -338,10 +339,10 @@ layout = dbc.Container([
             dbc.Modal([
                 dbc.ModalHeader(dbc.ModalTitle(
                     "Analyse de la carte des particules PM2.5")),
-                dbc.ModalBody(id="health_analysis-content-5"),
+                dbc.ModalBody(id="health_analysis-content-6"),
                 dbc.ModalFooter(dbc.Button(
-                    "Fermer", id="health_close-analysis-button-5", className="ms-auto")),
-            ], id="health_analysis-modal-5", size="lg", is_open=False),
+                    "Fermer", id="health_close-analysis-button-6", className="ms-auto")),
+            ], id="health_analysis-modal-6", size="lg", is_open=False),
         ], style={'backgroundColor': 'black'}),
         className="mb-4 shadow"
     )
@@ -439,8 +440,21 @@ def register_callbacks(app):
 
         return [map_src]
 
+    def load_analysis(graphique_id):
+
+        chemin_fichier = Path(
+            f"analyse/sante/analyse_graphique_{graphique_id}.html")
+        try:
+            with open(chemin_fichier, "r", encoding="utf-8") as fichier:
+                return dcc.Markdown(
+                    fichier.read(),
+                    dangerously_allow_html=True  # Autorise l'utilisation de HTML
+                )
+        except FileNotFoundError:
+            return dcc.Markdown("Aucune analyse disponible pour ce graphique.")
+
     # Callbacks pour les modals
-    for i in range(6):  # Pas besoin de range(0,6), range(6) suffit
+    for i in range(1, 7):
         @app.callback(
             [Output(f"health_analysis-modal-{i}", "is_open"),
              Output(f"health_analysis-content-{i}", "children")],
@@ -459,7 +473,7 @@ def register_callbacks(app):
             button_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
             if button_id == f"health_open-analysis-button-{idx}":
-                analysis_text = f"Description spécifique pour le graphique {idx}."
+                analysis_text = load_analysis(idx)
                 return True, analysis_text
             elif button_id == f"health_close-analysis-button-{idx}":
                 return False, no_update

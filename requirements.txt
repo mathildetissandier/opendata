@@ -6,3 +6,4 @@ Werkzeug
 pandas
 numpy
 scikit-learn
+folium

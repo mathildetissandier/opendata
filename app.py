@@ -53,5 +53,6 @@ def display_page(pathname):
 # Lancer l'application
 
 if __name__ == '__main__':
-    port = os.environ.get('PORT', 8050)  # Le port dynamique utilisé par Render
+    port = os.environ.get('PORT', 8050)
+    print(f"Starting app on port {port}")  # Log de débogage
     app.run_server(debug=True, host='0.0.0.0', port=port)

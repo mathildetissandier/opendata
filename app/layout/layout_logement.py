@@ -411,7 +411,7 @@ layout = dbc.Container([
                 value='Vacants & Price',  # Valeur par défaut
                 labelStyle={'display': 'inline-block', 'margin-right': '20px'}
             ),
-            dcc.Graph(id='corr-matrix-graph-2'),
+            dcc.Graph(id='corr-matrix-graph-2',responsive=True,),
             dbc.Button("Analyse", id="open-analyses-button-7", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
         ], style={'padding': '10px', 'border': '1px solid #ccc', 'margin-bottom': '20px', 'flex': '1'}),
                     dbc.Modal([

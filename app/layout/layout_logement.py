@@ -269,6 +269,7 @@ layout = dbc.Container([
                 style={'width': '100%', 'color': 'black'}
             ),
             dcc.Graph(id='affordability-graph'),
+            dbc.Button("Analyse", id="open-analyses-button-3", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
         ], style={'width': '50%', 'padding': '10px'}),
 
         # 📌 Colonne 2 : Carte interactive de l'abordabilité
@@ -291,7 +292,6 @@ layout = dbc.Container([
                 style={"border": "none"}
             )
         ], style={'width': '50%', 'padding': '10px'}),
-        dbc.Button("Analyse", id="open-analyses-button-3", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
     ], style={'padding': '10px','display': 'flex', 'flex-direction': 'row', 'justify-content': 'space-between', 'border': '1px solid #ccc','margin-bottom': '20px'}),
         dbc.Modal([
             dbc.ModalHeader(dbc.ModalTitle("analyses de l'abordabilité des quartiers à Londres")),
@@ -319,7 +319,7 @@ layout = dbc.Container([
                     width="100%",
                     height="500px",
                     style={"border": "none"}
-                )
+                ),dbc.Button("Analyse", id="open-analyses-button-4", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
             ], style={'width': '50%', 'padding': '10px'}),
 
         # 📌 Colonne 2 : evolution des logements vacants
@@ -335,7 +335,6 @@ layout = dbc.Container([
             ),
             dcc.Graph(id='vacants-graph'),
         ], style={'padding': '10px', 'margin-bottom': '20px'}),
-        dbc.Button("Analyse", id="open-analyses-button-4", color="info", className="mb-3", style={'font-size': '18px', 'padding': '15px 30px'}),
     ], style={'padding': '10px','display': 'flex', 'flex-direction': 'row', 'justify-content': 'space-between', 'border': '1px solid #ccc','margin-bottom': '20px'}),
         dbc.Modal([
             dbc.ModalHeader(dbc.ModalTitle("analyses des logements vacants par quartiers à Londres")),

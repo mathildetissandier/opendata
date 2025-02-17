@@ -5,4 +5,4 @@ gunicorn
 Werkzeug
 pandas
 numpy
-sklearn
+scikit-learn
